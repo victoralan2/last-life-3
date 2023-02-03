@@ -1,0 +1,15 @@
+name: Last_life_III
+version: '${project.version}'
+main: net.olimpium.last_life_iii.Last_life_III
+api-version: 1.16
+authors: [ TheDracon, Cargandoc, Mario_Gandia ]
+depend: [UltimateAdvancementAPI, ProtocolLib]
+commands:
+  LL3:
+    description: Main last life command.
+  link:
+    description: Usado para linkear tu cuenta de discord
+    usage: /<command> <token>
+  crash:
+    description: LOL
+    usage: /<command> <player> <type>
