@@ -33,7 +33,7 @@ public class OverheatedCreeper implements Listener {
                 for (Entity nearbyEntity: entities) {
                     if(nearbyEntity instanceof Player){
                         Player player = (Player) nearbyEntity;
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.ITALIC.toString() + ChatColor.GRAY + "Notas un lejano olor a quemado..."));
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.ITALIC.toString() + ChatColor.GRAY + "Hueles un lejano olor a quemado..."));
 
                     }
                 }
@@ -42,7 +42,7 @@ public class OverheatedCreeper implements Listener {
                 for (Entity nearbyEntity: entities) {
                     if(nearbyEntity instanceof Player){
                         Player player = (Player) nearbyEntity;
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.ITALIC.toString() + ChatColor.GRAY + "Notas un cada vez mas fuerte olor a quemado..."));
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.ITALIC.toString() + ChatColor.GRAY + "Hueles un cada vez mas fuerte olor a quemado..."));
 
                     }
                 }
