@@ -56,6 +56,7 @@ public class TeamsManager {
         try {
 
             File directory = new File(Last_life_III.getPlugin().getDataFolder().getAbsolutePath() + "/Teams");
+            Boolean bool = directory.mkdirs();
             File[] files = directory.listFiles();
             teamList.clear();
             for (int i = 0; i < files.length; i++) {

@@ -89,7 +89,7 @@ public class CraftingMaps extends MapRenderer implements Listener {
     //Off hand canceller
     @EventHandler
     public void onPlayerSwapHands(PlayerSwapHandItemsEvent e){
-        if (e.getOffHandItem().getItemMeta() != null) return;
+        if (e.getOffHandItem().getItemMeta()== null) return;
         if (e.getOffHandItem().getItemMeta().getDisplayName().contains(ChatColor.DARK_AQUA + "Página antigua")){
             e.setCancelled(true);
         }

@@ -43,7 +43,9 @@ public class TankArcher implements Listener {
     }
     @EventHandler
     public void onHit(EntityDamageByEntityEvent e){
+        if(e.getEntity().getCustomName()==null) return;
         if(e.getEntity().getCustomName().equals(ChatColor.BLACK+ChatColor.BOLD.toString()+"esqueleto chungo")){
+            if(skeletonMap.get(e.getEntity().getUniqueId())==null) return;
             if(!skeletonMap.get(e.getEntity().getUniqueId()).equals(4)){
                 if(skeletonMap.get(e.getEntity().getUniqueId()).equals(3)){
                     e.setCancelled(true);
@@ -52,7 +54,7 @@ public class TankArcher implements Listener {
                     e.setCancelled(true);
                     e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE,1,2);
                     Vector direction = e.getEntity().getLocation().toVector().subtract(e.getDamager().getLocation().add(0,1.5,0).toVector()).multiply(-1);
-                    e.getDamager().setVelocity(direction.multiply(0.5));
+                    e.getDamager().setVelocity(direction.multiply(0.25));
                 }
                 skeletonMap.replace(e.getEntity().getUniqueId(),skeletonMap.get(e.getEntity().getUniqueId())+1);
             }else{
@@ -63,6 +65,7 @@ public class TankArcher implements Listener {
     }
     @EventHandler
     public void onDeath(EntityDeathEvent e){
+        if(e.getEntity().getCustomName()==null) return;
         if(e.getEntity().getCustomName().equals(ChatColor.BLACK+ChatColor.BOLD.toString()+"esqueleto chungo")){
             skeletonMap.remove(e.getEntity().getUniqueId());
         }
