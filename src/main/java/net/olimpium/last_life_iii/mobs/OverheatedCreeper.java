@@ -24,7 +24,7 @@ public class OverheatedCreeper implements Listener {
     @EventHandler
     public void onSpawn(EntitySpawnEvent e){
         if(e.getEntity() instanceof Creeper) {
-            if (RandomMobNumber.rngNumb <= 5 && RandomMobNumber.rngNumb > 0) {
+            if (RandomMobNumber.rngNumb <= 1 && RandomMobNumber.rngNumb > 0) {
                 e.getEntity().setCustomName(net.md_5.bungee.api.ChatColor.of("#FF4500") + "Over"+ net.md_5.bungee.api.ChatColor.of("#FF8300") + "heated" + net.md_5.bungee.api.ChatColor.of("#B7AC44") + " Creeper");
                 ((Creeper) e.getEntity()).setAI(false);
 
