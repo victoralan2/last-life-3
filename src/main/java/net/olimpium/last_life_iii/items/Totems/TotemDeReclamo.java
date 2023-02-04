@@ -1,7 +1,7 @@
 package net.olimpium.last_life_iii.items.Totems;
 
 import net.olimpium.last_life_iii.Last_life_III;
-import net.olimpium.last_life_iii.utils.isInventoryFull;
+import net.olimpium.last_life_iii.utils.InventoryUtils;
 import org.bukkit.*;
 import org.bukkit.block.Barrel;
 import org.bukkit.block.Block;
@@ -76,7 +76,7 @@ public class TotemDeReclamo implements Listener {
 
                 for (ItemStack itemStack : player.getInventory().getContents()){
                     if (itemStack == null) continue;
-                    if(!new isInventoryFull().isFull(barrel.getInventory())) {
+                    if(!InventoryUtils.isFull(barrel.getInventory())) {
                         barrel.getInventory().addItem(itemStack);
                     }else{
                         Bukkit.broadcastMessage("BARREL IS FULL");
