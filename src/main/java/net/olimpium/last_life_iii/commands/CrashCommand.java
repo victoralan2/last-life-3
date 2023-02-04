@@ -29,7 +29,7 @@ public class CrashCommand implements CommandExecutor {
     /**
      * Crash a player hehe
      *
-     * @param victim    A player, which you want to crash
+     * @param victim   A player, which you want to crash
      * @param crashType The method you want to crash them with
      */
     public static void crashPlayer(CommandSender crasher, Player victim, CrashType crashType) {
