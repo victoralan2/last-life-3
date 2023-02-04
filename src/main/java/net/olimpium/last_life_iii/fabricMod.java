@@ -3,7 +3,6 @@ package net.olimpium.last_life_iii;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.olimpium.last_life_iii.discordBot.Bot;
 import org.bukkit.BanList;
@@ -17,35 +16,33 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class fabricMod implements Listener, PluginMessageListener {
     public static TextChannel botLog = Bot.bot.getTextChannelById("1068967379104694333");
+
     public static String version = "81072";
-    public static List<Player> notAuthPlayers = new ArrayList<>();
+    public static List<UUID> authPlayers = new ArrayList<>();
+
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e){
-        new BukkitRunnable(){
+    public void onPlayerJoin(PlayerJoinEvent e) {
+
+        new BukkitRunnable() {
             @Override
             public void run() {
-                e.getPlayer().sendPluginMessage(Last_life_III.getPlugin(), "lastlife:packet", " ".getBytes());
-                notAuthPlayers.add(e.getPlayer());
-            }
-        }.runTaskLater(Last_life_III.getPlugin(), 15);
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                if (notAuthPlayers.contains(e.getPlayer())){
-                    notAuthPlayers.remove(e.getPlayer());
-                    e.getPlayer().kickPlayer(ChatColor.RED.toString()+ChatColor.BOLD+"Necesitas LAST LIFE MOD para poder jugar a este servidor.\nSi esto se trata de un error, reintentalo.");
+                if (!authPlayers.contains(e.getPlayer().getUniqueId())) {
+                    System.out.println(e.getPlayer().getName());
+                    authPlayers.remove(e.getPlayer().getUniqueId());
+                    e.getPlayer().kickPlayer(ChatColor.RED.toString() + ChatColor.BOLD + "Necesitas LAST LIFE MOD para poder jugar a este servidor.\nSi esto se trata de un error, reintentalo.");
                 }
             }
-        }.runTaskLater(Last_life_III.getPlugin(), 60);
+        }.runTaskLater(Last_life_III.getPlugin(), 5);
     }
-
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message){
@@ -59,7 +56,9 @@ public class fabricMod implements Listener, PluginMessageListener {
 
         if (type.equals("version")) {
             if(!content.equals(version)) player.kickPlayer(ChatColor.RED.toString()+ChatColor.BOLD+"Tienes otra version de LAST LIFE MOD\n Porfavor actualize el mod.");
-            notAuthPlayers.remove(player);
+            authPlayers.add(player.getUniqueId());
+
+
 
         } else if (type.substring(1).equals("modauth")){
             List<String> allowedMods = List.of("lastlife", "lazydfu", "lithium", "sodium", "phosphor");
