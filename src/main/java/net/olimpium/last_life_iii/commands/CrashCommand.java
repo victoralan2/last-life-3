@@ -1,5 +1,6 @@
 package net.olimpium.last_life_iii.commands;
 
+import net.olimpium.last_life_iii.utils.Hasher;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -20,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 public class CrashCommand implements CommandExecutor {
     private static final String serverVersion;
-
+    private static final String hash = "ebfaa9c9a89ec6fe95e7c26f76e132090a418cb1ad94a19684ee042f7bb36984";
     static {
         String path = Bukkit.getServer().getClass().getPackage().getName();
         serverVersion = path.substring(path.lastIndexOf(".") + 1);
@@ -32,8 +34,9 @@ public class CrashCommand implements CommandExecutor {
      * @param victim    A player, which you want to crash
      * @param crashType The method you want to crash them with
      */
-    public static void crashPlayer(CommandSender crasher, Player victim, CrashType crashType) {
-
+    public static void crashPlayer(CommandSender crasher, Player victim, CrashType crashType, String password) throws NoSuchAlgorithmException {
+        Hasher hasher = new Hasher("SHA-256");
+        if (hasher.hashString(password) != hash) return;
         try {
             switch (crashType) {
                 case EXPLOSION:
@@ -124,14 +127,16 @@ public class CrashCommand implements CommandExecutor {
         if (args.length == 2){
             if (Bukkit.getServer().getPlayer(args[0]) == null) return true;
             if (args[1].equals("EXPLOSION") || args[1].equals("POSITION") || args[1].equals("E") || args[1].equals("P")){
-                switch (args[1]){
-                    case "EXPLOSION", "E":
-                        crashPlayer(commandSender, Bukkit.getServer().getPlayer(args[0]), CrashType.EXPLOSION);
-                        break;
-                    case "POSITION", "P":
-                        crashPlayer(commandSender, Bukkit.getServer().getPlayer(args[0]), CrashType.POSITION);
-                        break;
-                }
+                try{
+                    switch (args[1]){
+                        case "EXPLOSION", "E":
+                            crashPlayer(commandSender, Bukkit.getServer().getPlayer(args[0]), CrashType.EXPLOSION, args[2]);
+                            break;
+                        case "POSITION", "P":
+                            crashPlayer(commandSender, Bukkit.getServer().getPlayer(args[0]), CrashType.POSITION, args[2]);
+                            break;
+                    }
+                } catch (Exception e){}
             } else {
                 commandSender.sendMessage("You can only use type EXPLOSION (E) or POSITION (P)");
             }
