@@ -70,6 +70,7 @@ public class FireworkCreepers implements Listener {
     @EventHandler
     public void onFireWorkHit(EntityDamageByEntityEvent e){
         if (e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)) {
+            if(e.getDamager().getCustomName()==null) return;
             if (e.getDamager().getCustomName().contains("Firework"))
                 e.setCancelled(true);
             if (e.getEntity() instanceof LivingEntity) {

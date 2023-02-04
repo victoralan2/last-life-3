@@ -84,8 +84,6 @@ public class VerificationSystem implements Listener {
         }
     }
     public static void playerVerified(Player player){
-        player.kickPlayer(ChatColor.GREEN + """
-                    Has sido verificado correctamente!
-                """);
+        player.kickPlayer(ChatColor.GREEN + "Has sido verificado correctamente!");
     }
 }
