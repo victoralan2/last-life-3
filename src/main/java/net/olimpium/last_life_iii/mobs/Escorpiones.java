@@ -26,8 +26,8 @@ public class Escorpiones implements Listener {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 250, 2));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 250, 2));
                 event.setCancelled(true);
-            } else if (event.getDamager().getCustomName().contains(ChatColor.GOLD+"Tyrius")){
-                player.setHealth(player.getHealth() -1);
+            } else if (event.getDamager().getCustomName().contains(ChatColor.YELLOW+"Tyrius")){
+                player.setHealth(player.getHealth()-1);
                 player.damage(0.00000001);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 250, 2));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 250, 0));
