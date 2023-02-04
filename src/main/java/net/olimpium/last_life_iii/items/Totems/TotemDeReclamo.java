@@ -2,6 +2,7 @@ package net.olimpium.last_life_iii.items.Totems;
 
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.utils.InventoryUtils;
+import net.olimpium.last_life_iii.utils.VerificationSystem;
 import org.bukkit.*;
 import org.bukkit.block.Barrel;
 import org.bukkit.block.Block;
@@ -42,7 +43,7 @@ public class TotemDeReclamo implements Listener {
                     public void run() {
                         player.stopSound(Sound.ITEM_TOTEM_USE);
                         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1f,0.85f);
-                        player.teleport(player.getWorld().getSpawnLocation());
+                        player.teleport(VerificationSystem.normalWorld.getSpawnLocation());
                         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, 1f,1.5f);
                     }
                 }.runTaskLater(Last_life_III.getPlugin(), 2);
@@ -92,6 +93,31 @@ public class TotemDeReclamo implements Listener {
                     i++;
                 }
 
+            }else{
+
+                Block block = VerificationSystem.normalWorld.getSpawnLocation().getBlock();
+                Block block1 = block.getLocation().add(0,1,0).getBlock();
+
+                block.setType(Material.BARREL);
+                block1.setType(Material.BARREL);
+
+                BlockState blockState = block.getState();
+                Barrel barrel = (Barrel) blockState;
+
+                BlockState blockState1 = Objects.requireNonNull(block1).getState();
+                Barrel barrel1 = (Barrel) blockState1;
+
+                for (ItemStack itemStack : player.getInventory().getContents()){
+                    if (itemStack == null) continue;
+                    if(!InventoryUtils.isFull(barrel.getInventory())) {
+                        barrel.getInventory().addItem(itemStack);
+                    }else{
+                        Bukkit.broadcastMessage("BARREL IS FULL");
+                        barrel1.getInventory().addItem(itemStack);
+                    }
+                }
+                player.getInventory().clear();
+
             }
         }
     }
@@ -107,7 +133,7 @@ public class TotemDeReclamo implements Listener {
         }
         if (player.getInventory().getItemInOffHand().getItemMeta() != null) {
             if (player.getInventory().getItemInOffHand().getItemMeta().getDisplayName().equals(ChatColor.AQUA.toString() + ChatColor.BOLD + "Tótem de Reclamo")) {
-               revive(player);
+                revive(player);
             }
         }
     }
