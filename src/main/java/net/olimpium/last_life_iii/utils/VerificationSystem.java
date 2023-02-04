@@ -46,6 +46,8 @@ public class VerificationSystem implements Listener {
                 if (e.getPlayer().getWorld().getName().equals(verifyWorld.getName())){
                     e.getPlayer().teleport(normalWorld.getSpawnLocation());
                     e.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
+                    e.getPlayer().getInventory().clear();
+                    e.getPlayer().setGameMode(GameMode.SURVIVAL);
                 }
             }
         } else {
@@ -66,8 +68,17 @@ public class VerificationSystem implements Listener {
             verifyWorld.setDifficulty(Difficulty.PEACEFUL);
         }
     }
-
-    public boolean isVerified(Player player){
+    public static void lastLifeStarted(){
+        for (Player player : Bukkit.getOnlinePlayers()){
+            if (isVerified(player)){
+                player.teleport(normalWorld.getSpawnLocation());
+                player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
+                player.getInventory().clear();
+                player.setGameMode(GameMode.SURVIVAL);
+            }
+        }
+    }
+    public static boolean isVerified(Player player){
         for(Member member : Bot.bot.getGuildById("913493619875385425").getMembers()){
             if (!member.getEffectiveName().equals(player.getName())) continue;
             if (member.getRoles().isEmpty()) return false;

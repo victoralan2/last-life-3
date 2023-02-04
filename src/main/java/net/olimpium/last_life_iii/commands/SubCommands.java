@@ -5,8 +5,10 @@ import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.Teams.LastLifeTeam;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.utils.TimeSystem;
+import net.olimpium.last_life_iii.utils.VerificationSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -56,6 +58,9 @@ public class SubCommands {
         public static void CommandStart (Player player){
             if (TimeSystem.Week == 0) {
                 Bukkit.broadcastMessage(ChatColor.RED + "LAST LIFE HAS STARTED!");
+                for (Player player2 : Bukkit.getOnlinePlayers()){
+                    VerificationSystem.lastLifeStarted();
+                }
                 TimeSystem.startLastLife();
             } else {
                 player.sendMessage(ChatColor.DARK_RED + "Last life has already started");
