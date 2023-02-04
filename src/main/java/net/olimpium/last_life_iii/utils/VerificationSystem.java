@@ -39,6 +39,8 @@ public class VerificationSystem implements Listener {
                         }
                     }
                 }
+                normalWorld.setTime(0);
+                normalWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
                 e.getPlayer().teleport(new Location(verifyWorld, 0.5, 11, 0.5));
                 e.getPlayer().setGameMode(GameMode.ADVENTURE);
                 verifyWorld.setDifficulty(Difficulty.PEACEFUL);
@@ -68,12 +70,19 @@ public class VerificationSystem implements Listener {
         }
     }
     public static void lastLifeStarted(){
+        normalWorld.setTime(0);
+        normalWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         for (Player player : Bukkit.getOnlinePlayers()){
             if (isVerified(player)){
                 player.teleport(normalWorld.getSpawnLocation());
                 player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
                 player.getInventory().clear();
                 player.setGameMode(GameMode.SURVIVAL);
+                for (Player playerToShow : Bukkit.getOnlinePlayers()){
+                    if (player == playerToShow) continue;
+                    player.showPlayer(playerToShow);
+                    playerToShow.showPlayer(player);
+                }
             }
         }
     }
