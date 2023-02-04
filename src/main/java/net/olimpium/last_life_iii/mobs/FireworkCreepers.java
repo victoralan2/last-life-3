@@ -19,7 +19,7 @@ public class FireworkCreepers implements Listener {
     @EventHandler
     public void onCreeperSpawns(EntitySpawnEvent e){
         if (e.getEntity() instanceof Creeper){
-            if (RandomMobNumber.rngNumb <= 50 && RandomMobNumber.rngNumb >= 0){
+            if (RandomMobNumber.rngNumb <= 5 && RandomMobNumber.rngNumb >= 0){
                 e.getEntity().setCustomName(ChatColor.DARK_RED + "Firework Creeper");
                 Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED,1);
                 new BukkitRunnable(){
