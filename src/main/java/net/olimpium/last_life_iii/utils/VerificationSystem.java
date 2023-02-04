@@ -21,7 +21,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public class VerificationSystem implements Listener {
     public static World verifyWorld = new WorldCreator("verify_lobby").createWorld();
-    public static World normalWorld = Bukkit.getWorld("Last Live 3");
+    public static World normalWorld = Bukkit.getWorld("Last Life 3");
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         getServer().getWorlds().add(verifyWorld);
