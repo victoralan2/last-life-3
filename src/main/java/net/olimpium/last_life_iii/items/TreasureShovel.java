@@ -92,8 +92,8 @@ public class TreasureShovel implements Listener {
             double rngNumb = rng.nextInt(10000);
             float chance1 = 50*100;//pepita de oro
             float chance2 = 20*100;//Lingote de oro
-            float chance3 = 50*100;//Escorpion
-            float chance4 = 15 *100;//Redstone
+            float chance3 = 5*100;//Escorpion
+            float chance4 = 15*100;//Redstone
             float chance5 = 95*10;//Manzana dorada
             float chance6 = 5*10;//Midas Curse
 
