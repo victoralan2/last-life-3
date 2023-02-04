@@ -1,23 +1,23 @@
 package net.olimpium.last_life_iii.items.Totems;
 
 import net.olimpium.last_life_iii.Last_life_III;
+import net.olimpium.last_life_iii.utils.isInventoryFull;
 import org.bukkit.*;
 import org.bukkit.block.Barrel;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityResurrectEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import java.util.Random;
+
 
 
 public class TotemDeReclamo implements Listener {
@@ -58,20 +58,37 @@ public class TotemDeReclamo implements Listener {
                 }
                 Block block = player.getWorld().getBlockAt(player.getBedSpawnLocation());
                 block.setType(Material.BARREL);
-                Barrel barrel1 = (Barrel) block.getBlockData();
+                Block block1 = null;
                 for (BlockFace face : new BlockFace[]{BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST}) {
                     Block relative = block.getRelative(face);
                     if (relative.getType().equals(Material.AIR)) {
                         relative.setType(Material.BARREL);
+                        block1 = relative;
                         break;
                     }
                 }
+
+                BlockState blockState = block.getState();
+                Barrel barrel = (Barrel) blockState;
+
+                BlockState blockState1 = Objects.requireNonNull(block1).getState();
+                Barrel barrel1 = (Barrel) blockState1;
+
+                for (ItemStack itemStack : player.getInventory().getContents()){
+                    if (itemStack == null) continue;
+                    if(!new isInventoryFull().isFull(barrel.getInventory())) {
+                        barrel.getInventory().addItem(itemStack);
+                    }else{
+                        Bukkit.broadcastMessage("BARREL IS FULL");
+                        barrel1.getInventory().addItem(itemStack);
+                    }
+                }
+                player.getInventory().clear();
 
                 int i = 0;
                 for (Block blockRemoved : blocksRemoved){
                     blocksPositions.get(i).getBlock().setType(blockRemoved.getType());
                     blocksPositions.get(i).getBlock().setBlockData(blockRemoved.getBlockData());
-                    Bukkit.broadcastMessage(blocksPositions.get(i).toString());
                     i++;
                 }
 
@@ -93,25 +110,5 @@ public class TotemDeReclamo implements Listener {
                revive(player);
             }
         }
-    }
-
-    //@EventHandler
-    public void onPlayerJoinTest(PlayerJoinEvent e){
-        ItemStack recallTotem = new ItemStack(Material.TOTEM_OF_UNDYING);
-        ItemMeta recallTotemItemMeta = recallTotem.getItemMeta();
-        recallTotemItemMeta.setDisplayName(ChatColor.AQUA.toString()+ChatColor.BOLD+"Tótem de Reclamo");
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.LIGHT_PURPLE+"Este totem ");
-
-        recallTotemItemMeta.setLore(lore);
-        recallTotem.setItemMeta(recallTotemItemMeta);
-        e.getPlayer().getInventory().addItem(recallTotem);
-    }
-    public void onplaceblock(BlockPlaceEvent e){
-        Bukkit.broadcastMessage("Test");
-        e.getBlock().setType(Material.CHEST);
-        org.bukkit.block.data.type.Chest a = ((org.bukkit.block.data.type.Chest) e.getBlock().getBlockData());
-        a.setType((org.bukkit.block.data.type.Chest.Type.RIGHT));
-        e.getBlock().setBlockData(a);
     }
 }
