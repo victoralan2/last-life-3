@@ -37,7 +37,7 @@ public class FireworkCreepers implements Listener {
 
     @EventHandler
     public void onCreeperExplodes(EntityExplodeEvent e) {
-
+        if(e.getEntity().getCustomName()==null) return;
         if (e.getEntity().getCustomName().contains(ChatColor.DARK_RED + "Firework Creeper")){
             Creeper creeper = (Creeper) e.getEntity();
             Location creeperLoc = creeper.getEyeLocation();
