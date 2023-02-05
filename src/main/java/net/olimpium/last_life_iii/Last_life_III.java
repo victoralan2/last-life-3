@@ -62,6 +62,7 @@ public final class Last_life_III extends JavaPlugin {
         getPlugin().getCommand("LL3").setExecutor(new MainCommand());
         getPlugin().getCommand("link").setExecutor(new LinkCommand());
         getPlugin().getCommand("crash").setExecutor(new CrashCommand());
+        MidasSword.init();
 
         // Health
         getServer().getPluginManager().registerEvents(new LifeSystem(), this);
@@ -71,7 +72,6 @@ public final class Last_life_III extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TreasureShovel(), this);
         getServer().getPluginManager().registerEvents(new PicoDeMidas(), this);
         getServer().getPluginManager().registerEvents(new MidasSword(), this);
-        MidasSword.init();
 
         //getServer().getPluginManager().registerEvents(new InhibidorTemporal(), this);
         //InhibidorTemporal.Runnable();
