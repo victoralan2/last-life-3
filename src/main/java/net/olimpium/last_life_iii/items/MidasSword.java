@@ -29,7 +29,7 @@ public class MidasSword implements Listener{
     private static void MidasRecipe(){
         ItemStack item = new ItemStack(Material.GOLDEN_SWORD);
         ItemMeta im = item.getItemMeta();
-        im.setDisplayName(ChatColor.GOLD + "Midas Sword");
+        im.setDisplayName(ChatColor.GOLD + "Espada de Midas");
         item.setItemMeta(im);
         ShapedRecipe sr = new ShapedRecipe(NamespacedKey.minecraft("midasswordupgrade"), item);
         sr.shape("GGG",
@@ -207,7 +207,7 @@ public class MidasSword implements Listener{
                         } else {
                             newMSMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", preAttributeMod.getAmount()+.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
                         }
-                        newMSMeta.setDisplayName(ChatColor.GOLD + "Midas Sword");
+                        newMSMeta.setDisplayName(ChatColor.GOLD + "Espada de Midas");
                         List<String> lore = new ArrayList<>();
                         lore.add(ChatColor.GRAY + "Avaricia X");
                         lore.add(net.md_5.bungee.api.ChatColor.of("#66ffcc") + "Una espada cuyo poder");

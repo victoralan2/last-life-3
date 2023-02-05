@@ -32,7 +32,7 @@ import java.util.Random;
 public class TreasureShovel implements Listener {
     @EventHandler
     public void TreasureShovel(BlockBreakEvent event) throws IOException{
-        if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_SHOVEL) && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Treasure Shovel")) {
+        if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_SHOVEL) && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Buscatesoros")) {
             Location loc = event.getBlock().getLocation();
             Player player = event.getPlayer();
             if (!player.getGameMode().equals(GameMode.CREATIVE)) {
