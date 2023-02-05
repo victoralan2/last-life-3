@@ -54,7 +54,7 @@ public enum LastItem {
                 itemMeta.setUnbreakable(true);
                 break;
             case MIDAS_PICKAXE:
-                name = ChatColor.GOLD+
+                name = ChatColor.GOLD+;
 
 
                 break;
