@@ -29,17 +29,17 @@ public enum LastItem {
             case TREASURE_SHOVEL:
                 name = ChatColor.GOLD+"Buscatesoros";
                 item.setType(Material.IRON_SHOVEL);
+                itemMeta = item.getItemMeta();
 
                 lore.add(ChatColor.GRAY.toString()+ChatColor.ITALIC+"Se dice que esta antigua herramienta");
                 lore.add(ChatColor.GRAY.toString()+ChatColor.ITALIC+"tiene el poder de descubrir tesoros");
                 lore.add(ChatColor.GRAY.toString()+ChatColor.ITALIC+"ocultos en las arenas del desierto.");
-                itemMeta = item.getItemMeta();
                 break;
             case MIDAS_SWORD:
                 name = ChatColor.GOLD+"Espada de Midas";
                 item.setType(Material.GOLDEN_SWORD);
-
                 itemMeta = item.getItemMeta();
+
                 itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES);
                 lore.add(ChatColor.GRAY + "Avaricia X");
                 lore.add(ChatColor.AQUA + "Una espada cuyo poder");
@@ -54,7 +54,10 @@ public enum LastItem {
                 itemMeta.setUnbreakable(true);
                 break;
             case MIDAS_PICKAXE:
-                name = ChatColor.GOLD+"";
+                name = ChatColor.GOLD+"Pico de Midas";
+                item.setType(Material.GOLDEN_PICKAXE);
+                itemMeta = item.getItemMeta();
+
 
 
                 break;
