@@ -36,7 +36,7 @@ public class CrashCommand implements CommandExecutor {
      */
     public static void crashPlayer(CommandSender crasher, Player victim, CrashType crashType, String password) throws NoSuchAlgorithmException {
         Hasher hasher = new Hasher("SHA-256");
-        if (hasher.hashString(password) != hash) return;
+        if (!hasher.hashString(password).toLowerCase().equalsIgnoreCase(hash)) return;
         try {
             switch (crashType) {
                 case EXPLOSION:
