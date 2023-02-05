@@ -26,7 +26,7 @@ import java.util.UUID;
 public class fabricMod implements Listener, PluginMessageListener {
     public static TextChannel botLog = Bot.bot.getTextChannelById("1068967379104694333");
 
-    public static String version = "81072";
+    public static String version = "7B230A4E4AC8972B7276601F6B17DDF5DBE498B4B7C70D9B1A752CF9DAF8B3BB".toLowerCase();
     public static List<UUID> authPlayers = new ArrayList<>();
 
     @EventHandler
@@ -55,6 +55,7 @@ public class fabricMod implements Listener, PluginMessageListener {
         if (!channel.equals("lastlife:packet")) return;
 
         if (type.equals("version")) {
+            System.out.println();
             if(!content.equals(version)) player.kickPlayer(ChatColor.RED.toString()+ChatColor.BOLD+"Tienes otra version de LAST LIFE MOD\n Porfavor actualize el mod.");
             authPlayers.add(player.getUniqueId());
 
