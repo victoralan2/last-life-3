@@ -1,7 +1,6 @@
-package net.olimpium.last_life_iii.items;
+package net.olimpium.last_life_iii.Items;
 
 import org.bukkit.*;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

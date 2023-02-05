@@ -1,10 +1,5 @@
-package net.olimpium.last_life_iii.items;
+package net.olimpium.last_life_iii.Items;
 
-import com.google.common.collect.Multimap;
-import net.minecraft.server.v1_16_R3.EntityPlayer;
-import net.minecraft.server.v1_16_R3.NBTTagCompound;
-import net.minecraft.server.v1_16_R3.NBTTagList;
-import net.minecraft.server.v1_16_R3.NetworkManagerServer;
 import net.olimpium.last_life_iii.Last_life_III;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;

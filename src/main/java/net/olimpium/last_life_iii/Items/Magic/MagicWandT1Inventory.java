@@ -1,4 +1,4 @@
-package net.olimpium.last_life_iii.items.Magic;
+package net.olimpium.last_life_iii.Items.Magic;
 
 import net.olimpium.last_life_iii.Last_life_III;
 import org.bukkit.Bukkit;
@@ -6,7 +6,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;

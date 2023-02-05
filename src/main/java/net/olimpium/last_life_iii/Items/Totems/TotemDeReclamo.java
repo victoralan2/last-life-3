@@ -1,11 +1,10 @@
-package net.olimpium.last_life_iii.items.Totems;
+package net.olimpium.last_life_iii.Items.Totems;
 
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.utils.InventoryUtils;
 import net.olimpium.last_life_iii.utils.VerificationSystem;
 import org.bukkit.*;
 import org.bukkit.block.*;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -13,11 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Bed;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 

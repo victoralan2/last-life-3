@@ -1,4 +1,4 @@
-package net.olimpium.last_life_iii.items;
+package net.olimpium.last_life_iii.Items;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

@@ -1,4 +1,4 @@
-package net.olimpium.last_life_iii.items;
+package net.olimpium.last_life_iii.Items;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
