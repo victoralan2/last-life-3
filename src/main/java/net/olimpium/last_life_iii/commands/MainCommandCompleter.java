@@ -1,6 +1,6 @@
 package net.olimpium.last_life_iii.commands;
 
-import net.olimpium.last_life_iii.Items.LastItem;
+import net.olimpium.last_life_iii.items.LastItem;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

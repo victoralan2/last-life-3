@@ -1,4 +1,4 @@
-package net.olimpium.last_life_iii.Items.Totems;
+package net.olimpium.last_life_iii.items.Totems;
 
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.utils.InventoryUtils;

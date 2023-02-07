@@ -1,4 +1,4 @@
-package net.olimpium.last_life_iii.Items;
+package net.olimpium.last_life_iii.items;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class PicoDeMidas implements Listener {
     @EventHandler
-    public void PicoDeMidas(BlockBreakEvent event){
+    public void blockBreakEvent(BlockBreakEvent event){
         if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE) && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Pico de Midas")) {
 
             Player player = event.getPlayer();

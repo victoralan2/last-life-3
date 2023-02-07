@@ -9,11 +9,11 @@ import net.olimpium.last_life_iii.commands.LinkCommand;
 import net.olimpium.last_life_iii.commands.MainCommand;
 import net.olimpium.last_life_iii.commands.MainCommandCompleter;
 import net.olimpium.last_life_iii.discordBot.Bot;
-import net.olimpium.last_life_iii.Items.CraftingMaps;
-import net.olimpium.last_life_iii.Items.MidasSword;
-import net.olimpium.last_life_iii.Items.PicoDeMidas;
-import net.olimpium.last_life_iii.Items.Totems.TotemDeReclamo;
-import net.olimpium.last_life_iii.Items.TreasureShovel;
+import net.olimpium.last_life_iii.items.CraftingMaps;
+import net.olimpium.last_life_iii.items.MidasSword;
+import net.olimpium.last_life_iii.items.PicoDeMidas;
+import net.olimpium.last_life_iii.items.Totems.TotemDeReclamo;
+import net.olimpium.last_life_iii.items.TreasureShovel;
 import net.olimpium.last_life_iii.mecanicas.*;
 import net.olimpium.last_life_iii.mobs.*;
 import net.olimpium.last_life_iii.mobs.MiniBosses.StarCollapser;
@@ -64,7 +64,7 @@ public final class Last_life_III extends JavaPlugin {
         getPlugin().getCommand("LL3").setTabCompleter(new MainCommandCompleter());
         getPlugin().getCommand("link").setExecutor(new LinkCommand());
         getPlugin().getCommand("crash").setExecutor(new CrashCommand());
-        MidasSword.init();
+
 
         // Health
         getServer().getPluginManager().registerEvents(new LifeSystem(), this);
@@ -74,10 +74,10 @@ public final class Last_life_III extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TreasureShovel(), this);
         getServer().getPluginManager().registerEvents(new PicoDeMidas(), this);
         getServer().getPluginManager().registerEvents(new MidasSword(), this);
-
         //getServer().getPluginManager().registerEvents(new InhibidorTemporal(), this);
         //InhibidorTemporal.Runnable();
         getServer().getPluginManager().registerEvents(new TotemDeReclamo(), this);
+        MidasSword.init();
 
 
         //mobs

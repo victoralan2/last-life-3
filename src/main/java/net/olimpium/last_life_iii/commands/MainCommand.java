@@ -1,7 +1,7 @@
 package net.olimpium.last_life_iii.commands;
 
 import net.olimpium.last_life_iii.discordBot.Bot;
-import net.olimpium.last_life_iii.Items.LastItem;
+import net.olimpium.last_life_iii.items.LastItem;
 import net.olimpium.last_life_iii.utils.TimeSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

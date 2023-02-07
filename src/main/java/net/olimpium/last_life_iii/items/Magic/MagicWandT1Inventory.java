@@ -1,4 +1,4 @@
-package net.olimpium.last_life_iii.Items.Magic;
+package net.olimpium.last_life_iii.items.Magic;
 
 import net.olimpium.last_life_iii.Last_life_III;
 import org.bukkit.Bukkit;

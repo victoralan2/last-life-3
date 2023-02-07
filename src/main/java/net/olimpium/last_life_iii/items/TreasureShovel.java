@@ -1,4 +1,4 @@
-package net.olimpium.last_life_iii.Items;
+package net.olimpium.last_life_iii.items;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -31,7 +31,7 @@ import java.util.Random;
 
 public class TreasureShovel implements Listener {
     @EventHandler
-    public void TreasureShovel(BlockBreakEvent event) throws IOException{
+    public void breakBlockEvent(BlockBreakEvent event) throws IOException{
         if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_SHOVEL) && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Buscatesoros")) {
             Location loc = event.getBlock().getLocation();
             Player player = event.getPlayer();
