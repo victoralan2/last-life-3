@@ -94,6 +94,13 @@ public class MainCommand implements CommandExecutor, Listener {
                 sender.sendMessage("/game trustadd <Player Name>"+ChatColor.GRAY+" - Adds the Trusted tag to a player, AntiCheat functionality.");
                 sender.sendMessage("/game trustrem  <Player Name>"+ChatColor.GRAY+" - Removes the Trusted tag of the player.");
                 sender.sendMessage("/game team"+ChatColor.GRAY+" - Needs further description.");
+
+            }else if(args[0].equalsIgnoreCase("give")){
+                for (LastItem value : LastItem.values()){
+                    if (args[1].equalsIgnoreCase(value.toString())){
+                        sender.getInventory().addItem(value.getItemStack());
+                    }
+                }
             }else{
                 sender.sendMessage(ChatColor.DARK_AQUA + "----------------------------------");
                 sender.sendMessage(ChatColor.GREEN + "use </game help>");

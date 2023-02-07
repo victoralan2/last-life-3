@@ -57,9 +57,6 @@ public enum LastItem {
                 name = ChatColor.GOLD+"Pico de Midas";
                 item.setType(Material.GOLDEN_PICKAXE);
                 itemMeta = item.getItemMeta();
-
-
-
                 break;
             case TEMPORAL_INHIBITOR:
 

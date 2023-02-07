@@ -181,8 +181,8 @@ public class MidasSword implements Listener{
                 public void run(){
                     if (e.getView().getPlayer().getOpenInventory().getInventory(0).getItem(0) == null)
                         return;
-                    if (e.getView().getPlayer().getOpenInventory().getInventory(0).getItem(0).getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Midas Sword")){
-                        if (!e.getView().getPlayer().getOpenInventory().getInventory(5).getItem(5).getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Midas Sword"))
+                    if (e.getView().getPlayer().getOpenInventory().getInventory(0).getItem(0).getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Espada de Midas")){
+                        if (!e.getView().getPlayer().getOpenInventory().getInventory(5).getItem(5).getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Espada de Midas"))
                             return;
 
                         ItemMeta preMSMeta = e.getView().getPlayer().getOpenInventory().getInventory(5).getItem(5).getItemMeta();

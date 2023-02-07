@@ -17,17 +17,17 @@ public class RenameCanceller implements Listener {
     @EventHandler
     public void onRenameItem(InventoryClickEvent event) throws NullPointerException{
         List<String> BannedItems = new ArrayList();
-        BannedItems.add(ChatColor.GOLD+"Treasure Shovel");
+        BannedItems.add(ChatColor.GOLD+"Buscatesoros");
         BannedItems.add(ChatColor.GOLD+"Maldición de midas");
         BannedItems.add(ChatColor.GOLD+"Pico de Midas");
-        BannedItems.add(ChatColor.GOLD+"Midas Sword");
+        BannedItems.add(ChatColor.GOLD+"Espada de Midas");
         BannedItems.add(ChatColor.GREEN + "Inhibidor Temporal");
         BannedItems.add(net.md_5.bungee.api.ChatColor.of("#956B22")+"Pico oxidado");
         BannedItems.add(net.md_5.bungee.api.ChatColor.of("#CCCCCC")+"Escudo Macizo");
         //event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD+"Treasure Shovel") (el object(notnull) es para error handling)
         if (event.getInventory().getType().equals(InventoryType.ANVIL)){
             if (event.getSlot() == 2){
-                if(!event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD+"Treasure Shovel") || event.getCurrentItem().getEnchantments().containsKey(Enchantment.DIG_SPEED)){
+                if(!event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD+"Buscatesoros") || event.getCurrentItem().getEnchantments().containsKey(Enchantment.DIG_SPEED)){
                     if (event.getInventory().getType().equals(InventoryType.ANVIL) && event.getSlotType().equals(InventoryType.SlotType.RESULT)){
                         if(BannedItems.contains(event.getInventory().getItem(0).getItemMeta() == null))
                             return;

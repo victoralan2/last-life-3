@@ -91,7 +91,7 @@ public class fabricMod implements Listener, PluginMessageListener {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             if (goodSoFar){
                 embedBuilder.setColor(Color.GREEN);
-                embedBuilder.setTitle(player.getName()+" - Successful join");
+                embedBuilder.setTitle(player.getName()+" - Successful join - With the IP ADRESS: " + player.getAddress().getHostName());
             } else {
                 aSneekyLittlePlayerHasTryedToCheat(player);
                 embedBuilder.setColor(Color.RED);
