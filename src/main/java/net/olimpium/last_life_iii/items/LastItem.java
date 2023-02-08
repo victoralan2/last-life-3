@@ -63,7 +63,7 @@ public enum LastItem {
                 break;
             case TOTEM_RECALL:
                 name = ChatColor.AQUA+"Totem de Reclamo";
-                item.setTyoe(Material.TOTEM_OF_UNDYING);
+                item.setType(Material.TOTEM_OF_UNDYING);
 
                 break;
         }
