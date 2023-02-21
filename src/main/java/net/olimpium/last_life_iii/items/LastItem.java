@@ -57,13 +57,18 @@ public enum LastItem {
                 name = ChatColor.GOLD+"Pico de Midas";
                 item.setType(Material.GOLDEN_PICKAXE);
                 itemMeta = item.getItemMeta();
+
                 break;
             case TEMPORAL_INHIBITOR:
+                name = ChatColor.GREEN+"Inhibidor Temporal";
+                item.setType(Material.STRAY_SPAWN_EGG);
+                itemMeta = item.getItemMeta();
 
                 break;
             case TOTEM_RECALL:
                 name = ChatColor.AQUA+"Totem de Reclamo";
                 item.setType(Material.TOTEM_OF_UNDYING);
+                itemMeta = item.getItemMeta();
 
                 break;
         }
