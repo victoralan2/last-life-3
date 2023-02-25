@@ -98,7 +98,11 @@ public class MainCommand implements CommandExecutor, Listener {
             }else if(args[0].equalsIgnoreCase("give")){
                 for (LastItem value : LastItem.values()){
                     if (args[1].equalsIgnoreCase(value.toString())){
-                        sender.getInventory().addItem(value.getItemStack());
+                        if(args[2]!=null) {
+                            for (int i = 0; i < Integer.parseInt(args[2]); i++) {
+                                sender.getInventory().addItem(value.getItemStack());
+                            }
+                        }
                     }
                 }
             }else{
