@@ -71,7 +71,7 @@ public enum LastItem {
         if (itemMeta != null) {
             itemMeta.setLore(lore);
         }else{
-
+            System.out.println("Lore not found, its null");
         }
         if (itemMeta != null) {
             itemMeta.setDisplayName(name);
