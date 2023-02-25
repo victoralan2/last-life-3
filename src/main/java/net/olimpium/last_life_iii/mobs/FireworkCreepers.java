@@ -18,22 +18,24 @@ import org.bukkit.util.Vector;
 public class FireworkCreepers implements Listener {
     @EventHandler
     public void onCreeperSpawns(EntitySpawnEvent e){
-        if (e.getEntity() instanceof Creeper){
-            if (RandomMobNumber.rngNumb <= 5 && RandomMobNumber.rngNumb >= 0){
-                e.getEntity().setCustomName(ChatColor.DARK_RED + "Firework Creeper");
-                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED,1);
-                new BukkitRunnable(){
-                    @Override
-                    public void run(){
-                        if(!e.getEntity().isDead()){
-                            e.getEntity().getWorld().spawnParticle(Particle.REDSTONE,e.getEntity().getLocation().add(0,1,0),5,0.25,0.5,0.25,0,dustOptions);
-                            e.getEntity().getWorld().spawnParticle(Particle.FIREWORKS_SPARK,e.getEntity().getLocation().add(0,1,0),1,0.25,0.5,0.25,0);
+        if (e.getEntity() instanceof Creeper) {
+            if (RandomMobNumber.rngNumb <= 6 && RandomMobNumber.rngNumb >= 1) {
+                    e.getEntity().setCustomName(ChatColor.DARK_RED + "Firework Creeper");
+                    Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 1);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (!e.getEntity().isDead()) {
+                                e.getEntity().getWorld().spawnParticle(Particle.REDSTONE, e.getEntity().getLocation().add(0, 1, 0), 5, 0.25, 0.5, 0.25, 0, dustOptions);
+                                e.getEntity().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, e.getEntity().getLocation().add(0, 1, 0), 1, 0.25, 0.5, 0.25, 0);
+                            }
                         }
-                    }
-                }.runTaskTimer(Last_life_III.getPlugin(),0,1);
+                    }.runTaskTimer(Last_life_III.getPlugin(), 0, 1);
+                }
             }
         }
-    }
+
+
 
     @EventHandler
     public void onCreeperExplodes(EntityExplodeEvent e) {
