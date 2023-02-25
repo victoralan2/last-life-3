@@ -63,7 +63,7 @@ public enum LastItem {
                 itemMeta = item.getItemMeta();
             }
             case TOTEM_RECALL -> {
-                name = ChatColor.AQUA + "Totem de Reclamo";
+                name = ChatColor.AQUA + ChatColor.BOLD.toString() + "Tótem de Reclamo";
                 item.setType(Material.TOTEM_OF_UNDYING);
                 itemMeta = item.getItemMeta();
             }
@@ -79,7 +79,6 @@ public enum LastItem {
             System.out.println("Name not found, its null");
         }
         item.setItemMeta(itemMeta);
-
 
         return item;
     }
