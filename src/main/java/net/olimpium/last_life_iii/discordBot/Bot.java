@@ -54,6 +54,7 @@ public class Bot extends ListenerAdapter implements Listener {
                 .setEventManager(new AnnotatedEventManager())
                 .addEventListeners(new Bot())
                 .addEventListeners(new VerifyCommand())
+                .addEventListeners(new CloseCommand())
                 .addEventListeners(new BanCommand())
                 .setChunkingFilter(ChunkingFilter.ALL)
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
@@ -76,6 +77,9 @@ public class Bot extends ListenerAdapter implements Listener {
                         .addOption(OptionType.INTEGER,"tiempo","tiempo del baneao", true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
                         .setGuildOnly(true),
+                Commands.slash("close","Cierra temporalmente lastlife.")
+                        .setGuildOnly(true)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
                 Commands.context(Command.Type.USER,"Banear de Last Life")
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
                         .setGuildOnly(true)
