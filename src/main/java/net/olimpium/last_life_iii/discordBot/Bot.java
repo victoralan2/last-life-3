@@ -1,7 +1,6 @@
 package net.olimpium.last_life_iii.discordBot;
 
 import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -32,6 +31,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -77,7 +77,8 @@ public class Bot extends ListenerAdapter implements Listener {
                         .addOption(OptionType.INTEGER,"tiempo","tiempo del baneao", true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
                         .setGuildOnly(true),
-                Commands.slash("close","Cierra temporalmente lastlife.")
+                Commands.slash("maintenance","Pone o quita el mantenimiento el servidor.")
+                        .addOption(OptionType.INTEGER, "tiempo","Tiempo aproximado de mantenimiento (en minutos)")
                         .setGuildOnly(true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
                 Commands.context(Command.Type.USER,"Banear de Last Life")
@@ -187,7 +188,11 @@ public class Bot extends ListenerAdapter implements Listener {
             //if()
     }
 
-    public static void serverMaintenance(boolean closed, boolean verbosse, String MTime){
+    /**
+     * @param closed if it closes
+     * @param time The time minutes
+     */
+    public static void serverMaintenance(boolean closed,  @Nullable Integer time){
         if (!closed){
             EmbedBuilder baseEmbed = new EmbedBuilder();
             baseEmbed.setTitle("**Servidor abierto**");
@@ -200,8 +205,9 @@ public class Bot extends ListenerAdapter implements Listener {
             EmbedBuilder baseEmbed = new EmbedBuilder();
             baseEmbed.setTitle("**Servidor en mantenimiento**");
             baseEmbed.setColor(Color.RED);
-            if (verbosse){
-                Message trueMessage = bot.getChannelById(NewsChannel.class,"919552536850075658").sendMessageEmbeds(baseEmbed.setDescription("Tiempo esperado: **"+MTime + " minutos**").build()).complete();
+
+            if (time != null){
+                Message trueMessage = bot.getChannelById(NewsChannel.class,"919552536850075658").sendMessageEmbeds(baseEmbed.setDescription("Tiempo esperado: **"+ time + " minutos**").build()).complete();
                 trueMessage.addReaction(Emoji.fromUnicode("U+1F480")).queue();
                 Message message = bot.getChannelById(NewsChannel.class,"919552536850075658").sendMessage("@everyone" + "Servidor en mantenimiento").complete();
                 message.delete().queue();
