@@ -39,15 +39,19 @@ public class MainCommand implements CommandExecutor, Listener {
                 SubCommands.CommandStart(sender);
             } else if (args[0].equalsIgnoreCase("close")) {
                 if (TimeSystem.Week != 0) {
-                    if (!TimeSystem.inMaintenance) {
+                    if (!TimeSystem.getIsInMaintenance()) {
                         sender.sendMessage(ChatColor.YELLOW + "LAST LIFE HAS BEEN CLOSED TO PUBLIC");
-
-                        if (args.length == 2) {
-                            String MTime = args[1];
-                            Bot.serverMaintenance(true, true, MTime);
-                        } else {
-                            Bot.serverMaintenance(true, false, "");
+                        try {
+                            if (args.length == 2) {
+                                String MTime = args[1];
+                                Bot.serverMaintenance(true,  Integer.parseInt(MTime));
+                            } else {
+                                Bot.serverMaintenance(true,null);
+                            }
+                        } catch (NumberFormatException exception){
+                            sender.sendMessage("Incorrect time");
                         }
+
                         TimeSystem.setIsInMaintenance(true);
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             if (player.isOp()) continue;
@@ -65,7 +69,7 @@ public class MainCommand implements CommandExecutor, Listener {
                 }
             } else if (args[0].equalsIgnoreCase("open")) {
                 if (TimeSystem.Week != 0) {
-                    if (TimeSystem.inMaintenance) {
+                    if (TimeSystem.getIsInMaintenance()) {
                         sender.sendMessage(ChatColor.GREEN + "LAST LIFE HAS BEEN OPENED");
                         Bot.serverMaintenance(false, false, "");
                         TimeSystem.setIsInMaintenance(false);

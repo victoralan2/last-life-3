@@ -1,14 +1,13 @@
 package net.olimpium.last_life_iii.commands;
 
 import net.olimpium.last_life_iii.Exceptions.MaxTeamMembersExceeded;
-import net.olimpium.last_life_iii.Last_life_III;
-import net.olimpium.last_life_iii.Teams.LastLifeTeam;
+import net.olimpium.last_life_iii.Teams.LLTCopy;
+import net.olimpium.last_life_iii.Teams.LastLifeTeams;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.utils.TimeSystem;
 import net.olimpium.last_life_iii.utils.VerificationSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -30,14 +29,14 @@ public class SubCommands {
                     members.add(Bukkit.getPlayer(args[i + 3]).getUniqueId());
                 }
                 Bukkit.broadcastMessage(args[2]);
-                new LastLifeTeam(args[2], members);
+                new LLTCopy(args[2], members);
             } catch (MaxTeamMembersExceeded | NullPointerException | IllegalArgumentException ignore) {
                 ignore.printStackTrace();
             }
 
         } else if (args[1].equalsIgnoreCase("players")) {
             if (args.length <= 4) {
-                LastLifeTeam team = TeamsManager.getTeamByName(args[2]);
+                LastLifeTeams team = TeamsManager.getTeamByName(args[2]);
                 if (team !=null){
                     if (args[3].equalsIgnoreCase("add")){
                         if (Bukkit.getPlayer(args[4]) != null){
@@ -49,7 +48,7 @@ public class SubCommands {
                 }
             }
             } else if (args[1].equalsIgnoreCase("list")) {
-                for (LastLifeTeam team : TeamsManager.teamList) {
+                for (LastLifeTeams team : TeamsManager.teamList) {
                     player.sendMessage(team.getName());
                 }
             }
