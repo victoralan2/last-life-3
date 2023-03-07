@@ -71,7 +71,7 @@ public class MainCommand implements CommandExecutor, Listener {
                 if (TimeSystem.Week != 0) {
                     if (TimeSystem.getIsInMaintenance()) {
                         sender.sendMessage(ChatColor.GREEN + "LAST LIFE HAS BEEN OPENED");
-                        Bot.serverMaintenance(false, false, "");
+                        Bot.serverMaintenance(false, null);
                         TimeSystem.setIsInMaintenance(false);
 
                     } else {

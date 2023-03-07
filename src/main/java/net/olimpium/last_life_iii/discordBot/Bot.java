@@ -74,7 +74,7 @@ public class Bot extends ListenerAdapter implements Listener {
                 Commands.slash("mineban", "Banea a un usuario.")
                         .addOption(OptionType.USER,"usuario","Banea al usuario selecionado en MINECRAFT y DISCORD",true)
                         .addOption(OptionType.STRING,"razón","Razón del baneo",true)
-                        .addOption(OptionType.INTEGER,"tiempo","tiempo del baneao", true)
+                        .addOption(OptionType.INTEGER,"tiempo","Tiempo del baneo", true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
                         .setGuildOnly(true),
                 Commands.slash("maintenance","Pone o quita el mantenimiento el servidor.")
@@ -213,7 +213,7 @@ public class Bot extends ListenerAdapter implements Listener {
                 message.delete().queue();
             } else {
                 Message trueMessage = bot.getChannelById(NewsChannel.class,"919552536850075658").sendMessageEmbeds(baseEmbed.build()).complete();
-                trueMessage.addReaction(Emoji.fromUnicode("U+1F480")).queue();;
+                trueMessage.addReaction(Emoji.fromUnicode("U+1F480")).queue();
                 Message message = bot.getChannelById(NewsChannel.class,"919552536850075658").sendMessage("@everyone" + "Servidor en mantenimiento").complete();
                 message.delete().queue();
             }
