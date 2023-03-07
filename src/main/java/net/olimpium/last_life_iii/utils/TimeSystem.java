@@ -22,7 +22,7 @@ public class TimeSystem {
 
     public static int Week = 0;
     public static long FixedTime = 0;
-    public static boolean inMaintenance = false;
+    private static boolean inMaintenance = false;
 
     public static File file = new File(Last_life_III.getPlugin().getDataFolder() + "\\Time.json");
 
