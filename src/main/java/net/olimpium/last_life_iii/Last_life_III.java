@@ -114,7 +114,7 @@ public final class Last_life_III extends JavaPlugin {
 
 
         //teams
-        TeamsManager.loadTeams();
+        TeamsManager.load();
 
         //advancements
         AdvancementManager.createBaseAdvancements();
@@ -155,11 +155,7 @@ public final class Last_life_III extends JavaPlugin {
     @Override
     public void onDisable() {
         getServer().getMessenger().unregisterOutgoingPluginChannel(this, "fabric:fabric");
-        try {
-            TeamsManager.saveTeams();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         Bot.shutDown();
 
