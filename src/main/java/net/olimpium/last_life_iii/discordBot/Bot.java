@@ -16,6 +16,8 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
@@ -23,7 +25,6 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.Teams.LastLifeTeam;
-import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.utils.TimeSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,13 +33,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.scoreboard.Team;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Bot extends ListenerAdapter implements Listener {
@@ -69,7 +67,7 @@ public class Bot extends ListenerAdapter implements Listener {
 
         //list of commands
         CommandListUpdateAction commands = bot.updateCommands();
-
+        //TODO hacer que no se puedan cambiar ni borrar teams cuando la semana ya ha empezado
         //adds a command
         commands.addCommands(
                 Commands.slash("verify", "Utiliza este comando para comenzar la verificación.")
@@ -85,7 +83,17 @@ public class Bot extends ListenerAdapter implements Listener {
                         .setGuildOnly(true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
                 Commands.slash("team","Crea un equipo, para last life (maximo numero de miembros "+ LastLifeTeam.maxMembers+")")
-                                .addOption(OptionType.SUB_COMMAND),
+                        .addSubcommands(
+                                new SubcommandData("create","Crea un nuevo team.")
+                                        .addOption(OptionType.STRING, "nombre", "El nombre del team.", true),
+                                new SubcommandData("invite","Crea un nuevo team.")
+                                        .addOption(OptionType.USER,"usuario","Invita un usuario a tu team.", true),
+                                new SubcommandData("remove", "Borra el team actual."),
+                                new SubcommandData("leave","Sales del team actual"),
+                                new SubcommandData("kick","Expulsa a un usuario del team.")
+                                        .addOption(OptionType.USER,"usuario","El usuario que sera expulsado del team.",true)
+                        )
+                        .setGuildOnly(true),
                 Commands.context(Command.Type.USER,"Banear de Last Life")
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
                         .setGuildOnly(true)

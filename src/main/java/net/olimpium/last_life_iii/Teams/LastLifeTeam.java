@@ -30,6 +30,12 @@ public class LastLifeTeam implements Serializable {
         if (players.size() > maxMembers) throw new RuntimeException(new MaxTeamMembersExceeded("Max member count excideed, expected less than " + maxMembers + " but got " + players.size()));
         this.members = players;
     }
+    public LastLifeTeam(@NotNull String name, @NotNull String player) {
+        this.teamName = name;
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add(player);
+        this.members = arrayList;
+    }
     private LastLifeTeam(@NotNull String name, @NotNull ArrayList<String> players, int updateAmmount, Inventory enderChest) {
         this.teamName = name;
         if (players.size() > maxMembers) throw new RuntimeException(new MaxTeamMembersExceeded("Max member count excideed, expected less than " + maxMembers + " but got " + players.size()));
@@ -64,14 +70,13 @@ public class LastLifeTeam implements Serializable {
     /**
      * Adds a user to the team, returns false if the user was already there
      **/
-    public void addMember(Player player){
-        this.members.add(player.getName());
+    public void addMember(String memberName){
+        this.members.add(memberName);
     }
-    public void addMember(String name){
-        if (members.size() >= 3 ) return;
+    public void removeMember(String memberName){
+        this.members.remove(memberName);
+    }
 
-        this.members.add(name);
-    }
 
     public Inventory getEnderChest() {
         return enderChest;

@@ -41,7 +41,7 @@ public class SubCommands {
                 if (team !=null){
                     if (args[3].equalsIgnoreCase("add")){
                         if (Bukkit.getPlayer(args[4]) != null){
-                            team.addMember(Bukkit.getPlayer(args[4]));
+                            team.addMember(args[4]);
                         } else {
                             player.sendMessage("No such player");
                         }
