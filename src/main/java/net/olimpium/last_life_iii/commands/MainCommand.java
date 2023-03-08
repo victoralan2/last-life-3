@@ -119,7 +119,7 @@ public class MainCommand implements CommandExecutor, Listener {
     }
     @EventHandler
     public void onPlayerTryToJoin(PlayerJoinEvent event){
-        if (TimeSystem.inMaintenance) {
+        if (TimeSystem.getIsInMaintenance()) {
             if (!event.getPlayer().isOp()){
                 event.getPlayer().kickPlayer(ChatColor.RED + "EL SERVIDOR ESTA ACTUALMENTE EN MANTENIMIENTO\n"+ChatColor.YELLOW+"Consulte #anuncios para saber más información.");
             }
