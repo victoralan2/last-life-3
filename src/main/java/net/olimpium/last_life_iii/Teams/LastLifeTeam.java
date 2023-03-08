@@ -17,19 +17,20 @@ import java.util.*;
 
 public class LastLifeTeam implements Serializable {
     private String teamName;
-    private final int maxMembers = 3;
-    private ArrayList<UUID> members;
-    private int upgradeAmount = 0;
-    private final int maxUpgradeAmount = 8;
+    public static final int maxMembers = 3;
+    private ArrayList<String> members;
+    private int upgradeAmount = 1;
+    public static final int maxUpgradeAmount = 3;
+    public static final int upgradeMultiplier = 9;
 
-    private Inventory enderChest = Bukkit.createInventory(null, 9*4);
+    private Inventory enderChest = Bukkit.createInventory(null, upgradeAmount*upgradeMultiplier);
 
-    public LastLifeTeam(@NotNull String name, @NotNull ArrayList<UUID> players) {
+    public LastLifeTeam(@NotNull String name, @NotNull ArrayList<String> players) {
         this.teamName = name;
         if (players.size() > maxMembers) throw new RuntimeException(new MaxTeamMembersExceeded("Max member count excideed, expected less than " + maxMembers + " but got " + players.size()));
         this.members = players;
     }
-    private LastLifeTeam(@NotNull String name, @NotNull ArrayList<UUID> players, int updateAmmount, Inventory enderChest) {
+    private LastLifeTeam(@NotNull String name, @NotNull ArrayList<String> players, int updateAmmount, Inventory enderChest) {
         this.teamName = name;
         if (players.size() > maxMembers) throw new RuntimeException(new MaxTeamMembersExceeded("Max member count excideed, expected less than " + maxMembers + " but got " + players.size()));
         this.members = players;
@@ -64,12 +65,12 @@ public class LastLifeTeam implements Serializable {
      * Adds a user to the team, returns false if the user was already there
      **/
     public void addMember(Player player){
-        this.members.add(player.getUniqueId());
+        this.members.add(player.getName());
     }
-    public void addMember(UUID uuid){
+    public void addMember(String name){
         if (members.size() >= 3 ) return;
 
-        this.members.add(uuid);
+        this.members.add(name);
     }
 
     public Inventory getEnderChest() {
@@ -83,9 +84,11 @@ public class LastLifeTeam implements Serializable {
     public int getMaxMembers(){
         return this.maxMembers;
     }
+
+
     public List<Player> getMembers(){
         List<Player> playerList = new ArrayList<>();
-        for (UUID uuid : members){
+        for (String uuid : members){
             playerList.add(Bukkit.getPlayer(uuid));
         }
         return playerList;
@@ -95,16 +98,14 @@ public class LastLifeTeam implements Serializable {
         try {
             Scanner scanner = new Scanner(file);
             String name = scanner.nextLine();
-            ArrayList<UUID> playersUUIDs = new ArrayList<>();
+            ArrayList<String> playersNames = new ArrayList<>();
             String uuids = scanner.nextLine();
 
-            for (String uuid : uuids.split("__")){
-                Last_life_III.theDracon_.sendMessage("UUID: " + uuid);
-
-                playersUUIDs.add(UUID.fromString(uuid));
+            for (String userName : uuids.split("__")){
+                playersNames.add(userName);
             }
             int upgradeAmmount = Integer.parseInt(scanner.nextLine());
-           return new LastLifeTeam(name, playersUUIDs, upgradeAmmount, inventory);
+           return new LastLifeTeam(name, playersNames, upgradeAmmount, inventory);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -112,20 +113,20 @@ public class LastLifeTeam implements Serializable {
     }
     public static void toFile(File file, LastLifeTeam team){
         try {
-            file.createNewFile();
+            if (!file.exists())
+                file.createNewFile();
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(team.getName() + "\n");
             boolean isFirst = true;
-            for (Player uuid : team.getMembers()){
+            for (Player player : team.getMembers()){
                 if (isFirst){
-                    fileWriter.write(uuid.getUniqueId().toString());
+                    fileWriter.write(player.getName());
                     isFirst = false;
                 } else{
-                    fileWriter.write(uuid.getUniqueId() + "__");
+                    fileWriter.write(player.getName() + "__");
                 }
             }
             fileWriter.write("\n");
-            System.out.println("UPGRADE AMMOUNT: " + team.getUpgradeAmount());
             fileWriter.write(team.getUpgradeAmount().toString() + "\n");
             fileWriter.close();
 

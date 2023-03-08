@@ -22,9 +22,9 @@ public class SubCommands {
         }
         if (args[1].equalsIgnoreCase("create")) {
             try {
-                ArrayList<UUID> members = new ArrayList<>();
+                ArrayList<String> members = new ArrayList<>();
                 for (int i = 0; i < args.length - 3; i++) {
-                    members.add(Bukkit.getPlayer(args[i + 3]).getUniqueId());
+                    members.add(args[i + 3]);
                 }
                 Bukkit.broadcastMessage(args[2]);
                 LastLifeTeam team = new LastLifeTeam(args[2], members);

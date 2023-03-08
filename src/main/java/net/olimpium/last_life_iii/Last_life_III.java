@@ -57,7 +57,6 @@ public final class Last_life_III extends JavaPlugin {
             e.printStackTrace();
         }
 
-
         //verification system
         getServer().getPluginManager().registerEvents(new VerificationSystem(), this);
 
@@ -130,6 +129,7 @@ public final class Last_life_III extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MobSpawnerCanceller(), this);
 
 
+
         //teams
         TeamsManager.load();
         TeamsManager.autoSave();
@@ -175,7 +175,6 @@ public final class Last_life_III extends JavaPlugin {
     public void onDisable() {
         getServer().getMessenger().unregisterOutgoingPluginChannel(this, "fabric:fabric");
 
-        TeamsManager.saveAll();
         Bot.shutDown();
         try {
             dataManager.save();
