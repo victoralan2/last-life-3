@@ -18,28 +18,45 @@ import net.olimpium.last_life_iii.mecanicas.*;
 import net.olimpium.last_life_iii.mobs.*;
 import net.olimpium.last_life_iii.mobs.MiniBosses.StarCollapser;
 import net.olimpium.last_life_iii.utils.*;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public final class Last_life_III extends JavaPlugin {
     private static Last_life_III plugin;
     public static precisionEnchant precisionEnchant;
-    public static String botToken = "MTAwODcxNTk3NzQwOTcwODEzMw.GH0g2f.U4WC1Zqcw9z4YyGnufSWp5yqL4Mt3TNsgN174s";
+    public static final String botToken = "MTAwODcxNTk3NzQwOTcwODEzMw.GH0g2f.U4WC1Zqcw9z4YyGnufSWp5yqL4Mt3TNsgN174s";
+
+    public static DataManager dataManager;
     private static String ip;
+
+    public static Player theDracon_ = Bukkit.getPlayer("TheDracon_");
+    public static Player mariogandia = Bukkit.getPlayer("mariogandia");
+
     @Override
     public void onEnable() {
         //PLUGIN STUFF
         plugin = this;
         ip = this.getServer().getIp();
+
+
+        //data manager
+        try {
+            dataManager =  new DataManager();
+            dataManager.load();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         //verification system
         getServer().getPluginManager().registerEvents(new VerificationSystem(), this);
@@ -115,6 +132,8 @@ public final class Last_life_III extends JavaPlugin {
 
         //teams
         TeamsManager.load();
+        TeamsManager.autoSave();
+
 
         //advancements
         AdvancementManager.createBaseAdvancements();
@@ -136,7 +155,7 @@ public final class Last_life_III extends JavaPlugin {
                 if (!jsonObject.isEmpty()){
                     TimeSystem.Week = TimeSystem.getWeek();
                     TimeSystem.FixedTime = TimeSystem.getFixedTime();
-                    TimeSystem.inMaintenance = TimeSystem.getIsInMaintenance();
+                    TimeSystem.setIsInMaintenance(TimeSystem.getIsInMaintenance());
                     getServer().getPluginManager().registerEvents(new MainCommand(), this);
                     System.out.println(TimeSystem.FixedTime+"");
                     if (TimeSystem.FixedTime != 0){
@@ -156,13 +175,16 @@ public final class Last_life_III extends JavaPlugin {
     public void onDisable() {
         getServer().getMessenger().unregisterOutgoingPluginChannel(this, "fabric:fabric");
 
-
+        TeamsManager.saveAll();
         Bot.shutDown();
-
+        try {
+            dataManager.save();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         //enchantmnets
         precisionEnchant = new precisionEnchant("precision"); unrRegisterEnchantment(precisionEnchant);
     }
-
 
 
     public static Last_life_III getPlugin(){

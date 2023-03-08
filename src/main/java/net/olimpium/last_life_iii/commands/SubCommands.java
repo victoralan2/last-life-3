@@ -1,17 +1,16 @@
 package net.olimpium.last_life_iii.commands;
 
-import net.olimpium.last_life_iii.Exceptions.MaxTeamMembersExceeded;
-import net.olimpium.last_life_iii.Teams.LLTCopy;
-import net.olimpium.last_life_iii.Teams.LastLifeTeams;
+import net.olimpium.last_life_iii.Teams.LastLifeTeam;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.utils.TimeSystem;
 import net.olimpium.last_life_iii.utils.VerificationSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryView;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class SubCommands {
@@ -22,21 +21,23 @@ public class SubCommands {
             player.sendMessage(ChatColor.DARK_AQUA + "----------------------------------");
         }
         if (args[1].equalsIgnoreCase("create")) {
-            Bukkit.broadcastMessage("created");
             try {
-                List<UUID> members = new ArrayList<>();
+                ArrayList<UUID> members = new ArrayList<>();
                 for (int i = 0; i < args.length - 3; i++) {
                     members.add(Bukkit.getPlayer(args[i + 3]).getUniqueId());
                 }
                 Bukkit.broadcastMessage(args[2]);
-                new LLTCopy(args[2], members);
-            } catch (MaxTeamMembersExceeded | NullPointerException | IllegalArgumentException ignore) {
-                ignore.printStackTrace();
+                LastLifeTeam team = new LastLifeTeam(args[2], members);
+                team.register();
+                Bukkit.broadcastMessage("created");
+
+            } catch (NullPointerException | IllegalArgumentException e) {
+                e.printStackTrace();
             }
 
         } else if (args[1].equalsIgnoreCase("players")) {
             if (args.length <= 4) {
-                LastLifeTeams team = TeamsManager.getTeamByName(args[2]);
+                LastLifeTeam team = TeamsManager.getTeamByName(args[2]);
                 if (team !=null){
                     if (args[3].equalsIgnoreCase("add")){
                         if (Bukkit.getPlayer(args[4]) != null){
@@ -44,12 +45,24 @@ public class SubCommands {
                         } else {
                             player.sendMessage("No such player");
                         }
+                    }  else if (args[3].equalsIgnoreCase("list")) {
+                        player.sendMessage(Arrays.toString(team.getMembers().toArray()));
                     }
+                } else {
+                    player.sendMessage("No such team");
                 }
             }
             } else if (args[1].equalsIgnoreCase("list")) {
-                for (LastLifeTeams team : TeamsManager.teamList) {
+                for (LastLifeTeam team : TeamsManager.getTeamList()) {
+                    if (team == null) continue;
                     player.sendMessage(team.getName());
+                }
+            } else if (args[1].equalsIgnoreCase("inventory")){
+                LastLifeTeam team = TeamsManager.getTeamByName(args[2]);
+                if (team !=null){
+                    player.openInventory(team.getEnderChest());
+                } else {
+                    player.sendMessage("No such team");
                 }
             }
         }
