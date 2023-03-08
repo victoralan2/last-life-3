@@ -22,6 +22,8 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.olimpium.last_life_iii.Last_life_III;
+import net.olimpium.last_life_iii.Teams.LastLifeTeam;
+import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.utils.TimeSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.scoreboard.Team;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -81,6 +84,8 @@ public class Bot extends ListenerAdapter implements Listener {
                         .addOption(OptionType.INTEGER, "tiempo","Tiempo aproximado de mantenimiento (en minutos)")
                         .setGuildOnly(true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
+                Commands.slash("team","Crea un equipo, para last life (maximo numero de miembros "+ LastLifeTeam.maxMembers+")")
+                                .addOption(OptionType.SUB_COMMAND),
                 Commands.context(Command.Type.USER,"Banear de Last Life")
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
                         .setGuildOnly(true)
