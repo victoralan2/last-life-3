@@ -73,16 +73,16 @@ public class Bot extends ListenerAdapter implements Listener {
                 Commands.slash("verify", "Utiliza este comando para comenzar la verificación.")
                         .setGuildOnly(true),
                 Commands.slash("mineban", "Banea a un usuario.")
-                        .addOption(OptionType.USER,"usuario","Banea al usuario selecionado en MINECRAFT y DISCORD",true)
-                        .addOption(OptionType.STRING,"razón","Razón del baneo",true)
-                        .addOption(OptionType.INTEGER,"tiempo","Tiempo del baneo", true)
+                        .addOption(OptionType.USER,"usuario","Bloquea al usuario selecionado en MINECRAFT y DISCORD",true)
+                        .addOption(OptionType.STRING,"razón","Razón del bloqueo",true)
+                        .addOption(OptionType.INTEGER,"tiempo","Tiempo del bloqueo", true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
                         .setGuildOnly(true),
                 Commands.slash("maintenance","Pone o quita el mantenimiento el servidor.")
                         .addOption(OptionType.INTEGER, "tiempo","Tiempo aproximado de mantenimiento (en minutos)")
                         .setGuildOnly(true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
-                Commands.slash("team","Crea un equipo, para last life (maximo numero de miembros "+ LastLifeTeam.maxMembers+")")
+                Commands.slash("team","Crea un equipo, para last life (màximo número de miembros "+ LastLifeTeam.maxMembers+")")
                         .addSubcommands(
                                 new SubcommandData("create","Crea un nuevo team.")
                                         .addOption(OptionType.STRING, "nombre", "El nombre del team.", true),
@@ -91,7 +91,7 @@ public class Bot extends ListenerAdapter implements Listener {
                                 new SubcommandData("remove", "Borra el team actual."),
                                 new SubcommandData("leave","Sales del team actual"),
                                 new SubcommandData("kick","Expulsa a un usuario del team.")
-                                        .addOption(OptionType.USER,"usuario","El usuario que sera expulsado del team.",true)
+                                        .addOption(OptionType.USER,"usuario","El usuario que será expulsado del team.",true)
                         )
                         .setGuildOnly(true),
                 Commands.context(Command.Type.USER,"Banear de Last Life")
