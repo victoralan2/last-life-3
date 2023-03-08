@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,15 +14,19 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class DataManager {
-	private File configFile;
 
-	private final File metaDataFile = new File(Last_life_III.getPlugin().getDataFolder() + "/files.meta");
+
+	private final File metaDataFile ;
 
 	private HashMap<File, JSONObject> dataList;
-	public DataManager(File file){
-		this.configFile = file;
+	public DataManager(){
+		metaDataFile = new File(Last_life_III.getPlugin().getDataFolder() + "/files.meta");
+		try {
+			metaDataFile.createNewFile();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
 	}
-
 	public void addData(JSONObject data, File file){
 		dataList.put(file, data);
 		save(data, file);
@@ -41,22 +46,21 @@ public class DataManager {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for (Map.Entry<File, JSONObject> data : dataList.entrySet()){
-					File file = data.getKey();
-					JSONObject json = data.getValue();
-					save(json, file);
+				try {
+					save();
+				} catch (Exception e){
+					e.printStackTrace();
 				}
 			}
 		}.runTaskTimer(Last_life_III.getPlugin(), 0, period);
 
 	}
-	private void save() throws IOException {
+	public void save() throws IOException {
 		for (Map.Entry entry : dataList.entrySet()){
 			JSONObject json = (JSONObject) entry.getValue();
 			File file = (File)entry.getKey();
 			save(json, file);
 		}
-
 		// Save the metadata
 		saveMetadata();
 	}
@@ -79,7 +83,7 @@ public class DataManager {
 	private void saveMetadata() throws IOException {
 		FileWriter fileWriter = new FileWriter(metaDataFile);
 		for (File file : dataList.keySet()){
-			fileWriter.write(file.getPath());
+			fileWriter.write(file.getPath() + "\n");
 		}
 	}
 	private void load(File file) throws Exception {
