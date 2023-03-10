@@ -54,6 +54,7 @@ public class Bot extends ListenerAdapter implements Listener {
         bot = JDABuilder.createDefault(Last_life_III.getBotToken())
                 .setEventManager(new AnnotatedEventManager())
                 .addEventListeners(new Bot())
+                .addEventListeners(new TeamCommand())
                 .addEventListeners(new VerifyCommand())
                 .addEventListeners(new CloseCommand())
                 .addEventListeners(new BanCommand())
@@ -82,10 +83,11 @@ public class Bot extends ListenerAdapter implements Listener {
                         .addOption(OptionType.INTEGER, "tiempo","Tiempo aproximado de mantenimiento (en minutos)")
                         .setGuildOnly(true)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
-                Commands.slash("team","Crea un equipo, para last life (màximo número de miembros "+ LastLifeTeam.maxMembers+")")
+                Commands.slash("team","Crea un equipo, para last life (máximo número de miembros "+ LastLifeTeam.maxMembers+")")
                         .addSubcommands(
                                 new SubcommandData("create","Crea un nuevo team.")
-                                        .addOption(OptionType.STRING, "nombre", "El nombre del team.", true),
+                                        .addOption(OptionType.STRING, "nombre", "El nombre del team.", true)
+                                        .addOption(OptionType.STRING, "color", "El color del team", true, true),
                                 new SubcommandData("invite","Crea un nuevo team.")
                                         .addOption(OptionType.USER,"usuario","Invita un usuario a tu team.", true),
                                 new SubcommandData("remove", "Borra el team actual."),

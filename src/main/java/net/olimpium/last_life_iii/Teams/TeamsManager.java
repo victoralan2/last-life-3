@@ -2,6 +2,7 @@ package net.olimpium.last_life_iii.Teams;
 
 
 import net.olimpium.last_life_iii.Last_life_III;
+import net.olimpium.last_life_iii.discordBot.TeamCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -34,12 +35,13 @@ public class TeamsManager {
 		}
 		return null;
 	}
-	public static void unRegisterTeam(LastLifeTeam team){
+	public static void unregisterTeam(LastLifeTeam team){
 		teamList.remove(team);
 		File teamsFile = new File(teamsDir + "/" + team.getName() + ".yml");
 		teamsFile.delete();
 		File inventoryTeamsFile = new File(teamsDir + "/inv/inv_" + team.getName() + ".yml");
 		inventoryTeamsFile.delete();
+		TeamCommand.removeRoleOf(team);
 	}
 	public static void registerTeam(LastLifeTeam team){
 		saveTeam(team);

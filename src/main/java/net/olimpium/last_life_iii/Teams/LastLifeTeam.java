@@ -3,17 +3,21 @@ package net.olimpium.last_life_iii.Teams;
 import net.olimpium.last_life_iii.Exceptions.MaxTeamMembersExceeded;
 import net.olimpium.last_life_iii.Last_life_III;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 public class LastLifeTeam implements Serializable {
     private String teamName;
@@ -23,21 +27,27 @@ public class LastLifeTeam implements Serializable {
     public static final int maxUpgradeAmount = 3;
     public static final int upgradeMultiplier = 9;
 
+    public Color color;
     private Inventory enderChest = Bukkit.createInventory(null, upgradeAmount*upgradeMultiplier);
 
-    public LastLifeTeam(@NotNull String name, @NotNull ArrayList<String> players) {
+    public LastLifeTeam(@NotNull String name, Color color, @NotNull ArrayList<String> players) {
         this.teamName = name;
+        this.color = color;
+
         if (players.size() > maxMembers) throw new RuntimeException(new MaxTeamMembersExceeded("Max member count excideed, expected less than " + maxMembers + " but got " + players.size()));
         this.members = players;
     }
-    public LastLifeTeam(@NotNull String name, @NotNull String player) {
+    public LastLifeTeam(@NotNull String name, Color color, @NotNull String player) {
         this.teamName = name;
+        this.color = color;
+
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add(player);
         this.members = arrayList;
     }
-    private LastLifeTeam(@NotNull String name, @NotNull ArrayList<String> players, int updateAmmount, Inventory enderChest) {
+    private LastLifeTeam(@NotNull String name, Color color, @NotNull ArrayList<String> players, int updateAmmount, Inventory enderChest) {
         this.teamName = name;
+        this.color = color;
         if (players.size() > maxMembers) throw new RuntimeException(new MaxTeamMembersExceeded("Max member count excideed, expected less than " + maxMembers + " but got " + players.size()));
         this.members = players;
         this.upgradeAmount = updateAmmount;
@@ -86,31 +96,27 @@ public class LastLifeTeam implements Serializable {
         this.enderChest = enderChest;
     }
 
-    public int getMaxMembers(){
-        return this.maxMembers;
+    public static int getMaxMembers(){
+        return maxMembers;
     }
 
 
-    public List<Player> getMembers(){
-        List<Player> playerList = new ArrayList<>();
-        for (String uuid : members){
-            playerList.add(Bukkit.getPlayer(uuid));
-        }
-        return playerList;
+    public List<String> getMembers(){
+
+        return members;
     }
 
     public static LastLifeTeam fromFile(File file, Inventory inventory){
         try {
             Scanner scanner = new Scanner(file);
             String name = scanner.nextLine();
+            Color color = new Color(Integer.parseInt(scanner.nextLine()));
             ArrayList<String> playersNames = new ArrayList<>();
             String uuids = scanner.nextLine();
 
-            for (String userName : uuids.split("__")){
-                playersNames.add(userName);
-            }
+            Collections.addAll(playersNames, uuids.split("__"));
             int upgradeAmmount = Integer.parseInt(scanner.nextLine());
-           return new LastLifeTeam(name, playersNames, upgradeAmmount, inventory);
+           return new LastLifeTeam(name, color, playersNames, upgradeAmmount, inventory);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -122,13 +128,15 @@ public class LastLifeTeam implements Serializable {
                 file.createNewFile();
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(team.getName() + "\n");
+
+            fileWriter.write(team.color.getRGB() + "\n");
             boolean isFirst = true;
-            for (Player player : team.getMembers()){
+            for (String player : team.getMembers()){
                 if (isFirst){
-                    fileWriter.write(player.getName());
+                    fileWriter.write(player);
                     isFirst = false;
                 } else{
-                    fileWriter.write(player.getName() + "__");
+                    fileWriter.write(player + "__");
                 }
             }
             fileWriter.write("\n");

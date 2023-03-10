@@ -25,13 +25,12 @@ import java.util.UUID;
 
 public class fabricMod implements Listener, PluginMessageListener {
     public static TextChannel botLog = Bot.bot.getTextChannelById("1068967379104694333");
-
-    public static String version = "7B230A4E4AC8972B7276601F6B17DDF5DBE498B4B7C70D9B1A752CF9DAF8B3BB".toLowerCase();
+    public static String version = "81072".toLowerCase();
     public static List<UUID> authPlayers = new ArrayList<>();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-
+        //TODO: añadir mas tiempo posible pero poniendo un delay en el /login
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -49,8 +48,8 @@ public class fabricMod implements Listener, PluginMessageListener {
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
 
         String data = in.readLine().substring(1);
-        String type = data.split("<<SEPARATOR>>")[0];
-        String content = data.split("<<SEPARATOR>>")[1];
+        String type = data.split("-/sep/-")[0];
+        String content = data.split("-/sep/-")[1];
         System.out.println(data);
         if (!channel.equals("lastlife:packet")) return;
 
@@ -67,8 +66,8 @@ public class fabricMod implements Listener, PluginMessageListener {
             List<String> mods = new ArrayList<>();
 
             boolean goodSoFar = true;
-            if (content.contains("<<<MODSEPARATOR>>>")) {
-                for (String mod : content.split("<<<MODSEPARATOR>>>")) {
+            if (content.contains("-/msep/-")) {
+                for (String mod : content.split("-/msep/-")) {
                     if (mod.endsWith("3cc0f0907d")) continue;
                     if (mod.startsWith("fabric 0.")) continue;
                     mods.add(mod);
@@ -91,7 +90,7 @@ public class fabricMod implements Listener, PluginMessageListener {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             if (goodSoFar){
                 embedBuilder.setColor(Color.GREEN);
-                embedBuilder.setTitle(player.getName()+" - Successful join - With the IP ADRESS: " + player.getAddress().getHostName());
+                embedBuilder.setTitle(player.getName()+" - Successful join - With the IP ADRESS: " + player.getAddress().getAddress().toString());
             } else {
                 aSneekyLittlePlayerHasTryedToCheat(player);
                 embedBuilder.setColor(Color.RED);

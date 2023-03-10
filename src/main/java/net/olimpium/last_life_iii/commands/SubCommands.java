@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class SubCommands {
                     members.add(args[i + 3]);
                 }
                 Bukkit.broadcastMessage(args[2]);
-                LastLifeTeam team = new LastLifeTeam(args[2], members);
+                LastLifeTeam team = new LastLifeTeam(args[2], Color.RED, members);
                 team.register();
                 Bukkit.broadcastMessage("created");
 
@@ -61,6 +62,13 @@ public class SubCommands {
                 LastLifeTeam team = TeamsManager.getTeamByName(args[2]);
                 if (team !=null){
                     player.openInventory(team.getEnderChest());
+                } else {
+                    player.sendMessage("No such team");
+                }
+            } else if (args[1].equalsIgnoreCase("delete") || args[1].equalsIgnoreCase("remove")){
+                LastLifeTeam team = TeamsManager.getTeamByName(args[2]);
+                if (team !=null){
+                    TeamsManager.unregisterTeam(team);
                 } else {
                     player.sendMessage("No such team");
                 }
