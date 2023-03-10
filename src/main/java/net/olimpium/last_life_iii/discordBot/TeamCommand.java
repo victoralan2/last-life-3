@@ -106,7 +106,7 @@ public class TeamCommand extends ListenerAdapter {
 		EmbedBuilder embedBuilder = new EmbedBuilder();
 		embedBuilder.setTitle("Invitación a un equipo");
 
-		embedBuilder.addField(new MessageEmbed.Field("¡Has sido invitado a un equipo de Last Life!", "El equipo " + team.getName() + " te a invitado a ", false));
+		embedBuilder.addField(new MessageEmbed.Field("¡Has sido invitado a un equipo de Last Life!", "El equipo " + team.getName() + " te a invitado a unirte a el, la esta invitación expirará: <t:" + (System.currentTimeMillis() / 1000)  + 60 * 5 + ":R>", false));
 
 		member.getUser().openPrivateChannel()
 				.flatMap(channel -> channel.sendMessageEmbeds(embedBuilder.build()).addActionRow(Button.success("accept_invite", "Aceptar"), Button.danger("decline_invite", "Rechazar"))).queue();
