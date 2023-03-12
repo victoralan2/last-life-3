@@ -5,10 +5,13 @@ import com.fren_gor.ultimateAdvancementAPI.advancement.BaseAdvancement;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementDisplay;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementFrameType;
 import com.fren_gor.ultimateAdvancementAPI.visibilities.HiddenVisibility;
+import net.olimpium.last_life_iii.Teams.LastLifeTeam;
+import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.mobs.OverheatedCreeper;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 public class OverheatedJustInTimeAdv extends BaseAdvancement  implements HiddenVisibility {
@@ -30,5 +33,12 @@ public class OverheatedJustInTimeAdv extends BaseAdvancement  implements HiddenV
     @Override
     public void giveReward(@NotNull Player player){
         //reward here
+
+        //IMPORTANT: DO THIS:
+        if (TeamsManager.isUserInATeam(player.getName())){
+            LastLifeTeam teamOfPlayer = TeamsManager.getTeamOfUser(player.getName());
+            System.out.println("New advancement done!");
+            teamOfPlayer.newLastLifeAdvancement(this);
+        }
     }
 }

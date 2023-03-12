@@ -1,5 +1,6 @@
 package net.olimpium.last_life_iii.discordBot;
 
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import net.olimpium.last_life_iii.Last_life_III;
@@ -15,7 +16,7 @@ public class CloseCommand {
     @SubscribeEvent
     public void onCloseCommand(SlashCommandInteractionEvent event){
         if(!event.getName().equals("maintenance")) return;
-
+        if (!event.getMember().getPermissions().contains(Permission.ADMINISTRATOR)) return;
         if(!TimeSystem.getIsInMaintenance()) {
             TimeSystem.setIsInMaintenance(true);
 

@@ -1,6 +1,6 @@
 package net.olimpium.last_life_iii.commands;
 
-import net.olimpium.last_life_iii.gui.TeamMenu;
+import net.olimpium.last_life_iii.gui.teams.TeamMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

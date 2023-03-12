@@ -34,7 +34,6 @@ public class TeamCommand extends ListenerAdapter {
 
 	@SubscribeEvent
 	public void onTeamCommand(SlashCommandInteractionEvent event){
-		//TODO QUE CUANDO LAST EMPIEIZE LOS TEAMS NO CAMBIEN
 
 		if(!event.getName().equals("team")) return;
 		if (TimeSystem.getFixedTime() != 0 && TimeSystem.getWeek() != 0){
@@ -47,7 +46,7 @@ public class TeamCommand extends ListenerAdapter {
 		try {
 			switch (event.getSubcommandName()){
 				case "create":
-					if (isUserInATeam(event.getMember().getEffectiveName())){
+					if (TeamsManager.isUserInATeam(event.getMember().getEffectiveName())){
 						event.reply("Ya estas en un equipo, salte de el antes de crear otro").setEphemeral(true).queue();
 						return;
 					}
@@ -59,6 +58,10 @@ public class TeamCommand extends ListenerAdapter {
 						System.out.println("Someone tried to create a team with an existing name");
 						return;
 					}
+					if (event.getOption("nombre").getAsString().length() >= 28){
+						event.reply("El tamaño maxim del nombre del team es de 28 caracteres").setEphemeral(true).queue();
+						return;
+					}
 					LastLifeTeam newTeam = new LastLifeTeam(teamName, color, event.getMember().getEffectiveName());
 					newTeam.register();
 					Role role = createRole(teamName, color);
@@ -68,15 +71,15 @@ public class TeamCommand extends ListenerAdapter {
 					break;
 				case "invite":
 
-					if (!isUserInATeam(event.getMember().getEffectiveName())){
+					if (!TeamsManager.isUserInATeam(event.getMember().getEffectiveName())){
 						event.reply("No estas actualmente en un team").setEphemeral(true).queue();
 						return;
 					}
-					if (getTeamOfUser(event.getMember().getEffectiveName()).getMembers().size() == LastLifeTeam.getMaxMembers()){
+					if (TeamsManager.getTeamOfUser(event.getMember().getEffectiveName()).getMembers().size() == LastLifeTeam.getMaxMembers()){
 						event.reply("Tu team ya tiene la cantidad maxima de miembros.").setEphemeral(true).queue();
 						return;
-					} else if (getTeamOfUser(event.getMember().getEffectiveName()).getMembers().size() > LastLifeTeam.getMaxMembers()){
-						Last_life_III.theDracon_.sendMessage("UN TEAM TIENE MAS DE LOS MIEMBROS POSIBLES: " + getTeamOfUser(event.getMember().getEffectiveName()).getName());
+					} else if (TeamsManager.getTeamOfUser(event.getMember().getEffectiveName()).getMembers().size() > LastLifeTeam.getMaxMembers()){
+						Last_life_III.theDracon_.sendMessage("UN TEAM TIENE MAS DE LOS MIEMBROS POSIBLES: " + TeamsManager.getTeamOfUser(event.getMember().getEffectiveName()).getName());
 					}
 					try {
 						if (event.getGuild().getMembersByEffectiveName(event.getOption("usuario").getAsMember().getEffectiveName(), false).get(0) == null) {
@@ -89,8 +92,8 @@ public class TeamCommand extends ListenerAdapter {
 						return;
 					}
 
-					LastLifeTeam team = getTeamOfUser(event.getMember().getEffectiveName());
-					if (isUserInATeam(event.getGuild().getMembersByEffectiveName(event.getOption("usuario").getAsMember().getEffectiveName(), false).get(0).getEffectiveName())){
+					LastLifeTeam team = TeamsManager.getTeamOfUser(event.getMember().getEffectiveName());
+					if (TeamsManager.isUserInATeam(event.getGuild().getMembersByEffectiveName(event.getOption("usuario").getAsMember().getEffectiveName(), false).get(0).getEffectiveName())){
 						event.reply("Esta persona ya esta en un team").setEphemeral(true).queue();
 						return;
 					}
@@ -100,20 +103,20 @@ public class TeamCommand extends ListenerAdapter {
 					break;
 
 				case "remove":
-					if (isUserInATeam(event.getMember().getEffectiveName())){
-						getRoleOf(getTeamOfUser(event.getMember().getEffectiveName())).delete().queue();
-						TeamsManager.unregisterTeam(getTeamOfUser(event.getMember().getEffectiveName()));
+					if (TeamsManager.isUserInATeam(event.getMember().getEffectiveName())){
+						getRoleOf(TeamsManager.getTeamOfUser(event.getMember().getEffectiveName())).delete().queue();
+						TeamsManager.unregisterTeam(TeamsManager.getTeamOfUser(event.getMember().getEffectiveName()));
 						event.reply("El team ha sido borrado!").setEphemeral(true).queue();
 					}
 					break;
 				case "kick":
-					if (isUserInATeam(event.getMember().getEffectiveName())) {
+					if (TeamsManager.isUserInATeam(event.getMember().getEffectiveName())) {
 						Member toKick = event.getOption("usuario").getAsMember();
 						if (toKick.equals(event.getMember())){
 							event.reply("No te puedes echar a tí mismo del team. Sí quieres hacer esto usa /team leave.").setEphemeral(true).queue();
 							return;
 						}
-						LastLifeTeam team2 = getTeamOfUser(event.getMember().getEffectiveName());
+						LastLifeTeam team2 = TeamsManager.getTeamOfUser(event.getMember().getEffectiveName());
 						if (team2.getMembers().contains(toKick.getEffectiveName())) {
 							team2.removeMember(toKick.getEffectiveName());
 							event.getGuild().removeRoleFromMember(toKick, getRoleOf(team2)).queue();
@@ -138,6 +141,7 @@ public class TeamCommand extends ListenerAdapter {
 							}
 							toKick.getUser().openPrivateChannel().
 									flatMap(privateChannel -> privateChannel.sendMessageEmbeds(builder2.build())).queue();
+							event.reply("Se ha echado al usuario del team").setEphemeral(true).queue();
 
 						} else {
 							event.reply("No puedes echar usuarios que no estén en tu team.").setEphemeral(true).queue();
@@ -146,9 +150,9 @@ public class TeamCommand extends ListenerAdapter {
 					}
 					break;
 				case "leave":
-					if(isUserInATeam(event.getMember().getEffectiveName())) {
+					if(TeamsManager.isUserInATeam(event.getMember().getEffectiveName())) {
 						String memberName1 = event.getMember().getEffectiveName();
-						LastLifeTeam team3 = getTeamOfUser(event.getMember().getEffectiveName());
+						LastLifeTeam team3 = TeamsManager.getTeamOfUser(event.getMember().getEffectiveName());
 						Role teamRole = getRoleOf(team3);
 						team3.removeMember(event.getMember().getEffectiveName());
 						event.getGuild().removeRoleFromMember(event.getMember(), teamRole).queue();
@@ -236,7 +240,7 @@ public class TeamCommand extends ListenerAdapter {
 				event.getMessage().delete().queue();
 				return;
 			}
-			if (isUserInATeam(member.getEffectiveName())){
+			if (TeamsManager.isUserInATeam(member.getEffectiveName())){
 				event.reply("Ya estas en un team, abandonalo para entrar a otro.").setEphemeral(true).queue();
 				return;
 			}
@@ -294,24 +298,8 @@ public class TeamCommand extends ListenerAdapter {
 		}
 		return null;
 	}
-	private boolean isUserInATeam(String name){
-		try {
-			for (LastLifeTeam team : TeamsManager.getTeamList()){
 
-				if (team.getMembers().contains(name)) return true;
-			}
-		} catch (Exception e){
-			e.printStackTrace();
-		}
 
-		return false;
-	}
-	private LastLifeTeam getTeamOfUser(String name){
-		for (LastLifeTeam team : TeamsManager.getTeamList()){
-			if (team.getMembers().contains(name)) return team;
-		}
-		return null;
-	}
 
 	private Color getColorOf(String hexColor){
 		hexColor = hexColor.toUpperCase();

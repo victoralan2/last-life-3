@@ -49,9 +49,12 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: io.github.skytasul:guardianbeam:2.3.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.frengor:ultimateadvancementapi:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.CroaBeast:AdvancementInfo:2.0.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.protocol:ProtocolLib:4.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.protocol:ProtocolLib-API:4.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: cglib:cglib-nodep:3.2.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.8" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.8" level="project" />
   </component>
 </module>

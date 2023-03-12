@@ -6,6 +6,8 @@ import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementDispla
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementFrameType;
 import com.fren_gor.ultimateAdvancementAPI.visibilities.HiddenVisibility;
 import com.fren_gor.ultimateAdvancementAPI.visibilities.VanillaVisibility;
+import net.olimpium.last_life_iii.Teams.LastLifeTeam;
+import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.advancements.AdvancementManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,5 +32,16 @@ public class OverheatedKillAdv extends BaseAdvancement implements HiddenVisibili
                 }
             }
         });
+    }
+    @Override
+    public void giveReward(@NotNull Player player){
+        //reward here
+
+        //IMPORTANT: DO THIS:
+        if (TeamsManager.isUserInATeam(player.getName())){
+            LastLifeTeam teamOfPlayer = TeamsManager.getTeamOfUser(player.getName());
+            System.out.println("New advancement done!");
+            teamOfPlayer.newLastLifeAdvancement(this);
+        }
     }
 }

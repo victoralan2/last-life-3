@@ -1,5 +1,7 @@
 package net.olimpium.last_life_iii.commands;
 
+import com.fren_gor.ultimateAdvancementAPI.advancement.Advancement;
+import net.olimpium.last_life_iii.advancements.AdvancementManager;
 import net.olimpium.last_life_iii.discordBot.Bot;
 import net.olimpium.last_life_iii.items.LastItem;
 import net.olimpium.last_life_iii.utils.TimeSystem;
@@ -13,6 +15,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class MainCommand implements CommandExecutor, Listener {
     @Override
@@ -90,7 +96,7 @@ public class MainCommand implements CommandExecutor, Listener {
                 if (args[1] != null) {
                     Bukkit.getPlayer(args[1]).getScoreboardTags().remove("Trusted");
                 }
-            }else if(args[0].equalsIgnoreCase("help")){
+            } else if(args[0].equalsIgnoreCase("help")){
                 sender.sendMessage(ChatColor.GRAY.toString()+ChatColor.ITALIC+ChatColor.BOLD+"You may provide these arguments:");
                 sender.sendMessage("/game start"+ChatColor.GRAY+" - Runs Last Life III PROJECT.");
                 sender.sendMessage("/game close <minutes>"+ChatColor.GRAY+" - Closes the server, useful for maintenance.");
@@ -99,7 +105,7 @@ public class MainCommand implements CommandExecutor, Listener {
                 sender.sendMessage("/game trustrem  <Player Name>"+ChatColor.GRAY+" - Removes the Trusted tag of the player.");
                 sender.sendMessage("/game team"+ChatColor.GRAY+" - Needs further description.");
 
-            }else if(args[0].equalsIgnoreCase("give")){
+            } else if(args[0].equalsIgnoreCase("give")){
                 for (LastItem value : LastItem.values()){
                     if (args[1].equalsIgnoreCase(value.toString())){
                         try {
@@ -114,7 +120,86 @@ public class MainCommand implements CommandExecutor, Listener {
 
                     }
                 }
-            }else{
+            } else  if(args[0].equalsIgnoreCase("advancement")){
+                try {
+                    if (args[1].equalsIgnoreCase("grant")){
+                        Player player = Bukkit.getPlayer(args[2]);
+                        if (player == null) {
+                            sender.sendMessage("Not a player");
+                            return true;
+                        }
+                        if (args[3].equalsIgnoreCase("*")){
+                            for (Advancement advancement : AdvancementManager.advancementList){
+                                if (advancement.getKey().getKey().contains("recipes/")) continue;
+
+                                advancement.grant(player);
+                            }
+                            Iterator<org.bukkit.advancement.Advancement> advancementIterator = Bukkit.getServer().advancementIterator();
+                            while (advancementIterator.hasNext()){
+                                org.bukkit.advancement.Advancement advancement = advancementIterator.next();
+                                if (advancement.getKey().getKey().contains("recipes/")) continue;
+
+                                for (String criteria :  player.getAdvancementProgress(advancement).getRemainingCriteria()){
+                                    player.getAdvancementProgress(advancement).awardCriteria(criteria);
+                                }
+                            }
+                        } else {
+                            if (Objects.equals(args[3].split(":")[0], "last_life_3")){
+                                Advancement advancement = AdvancementManager.getLastLifeAdvancementById(args[3].split(":")[0], args[3].split(":")[1]);
+                                if (advancement == null) {
+                                    sender.sendMessage("Unknown advancement");
+                                    return true;
+                                }
+                                advancement.grant(player);
+                            } else {
+                                org.bukkit.advancement.Advancement advancement = AdvancementManager.getAdvancementById(args[3].split(":")[0], args[3].split(":")[1]);
+                                for (String criteria : player.getAdvancementProgress(advancement).getRemainingCriteria())
+                                    player.getAdvancementProgress(advancement).awardCriteria(criteria);
+
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("revoke")){
+                        Player player = Bukkit.getPlayer(args[2]);
+                        if (player == null) {
+                            sender.sendMessage("Not a player");
+                            return true;
+                        }
+                        if (args[3].equalsIgnoreCase("*")){
+                            for (Advancement advancement : AdvancementManager.advancementList){
+                                if (advancement.getKey().getKey().contains("recipes/")) continue;
+
+                                advancement.revoke(player);
+                            }
+                            Iterator<org.bukkit.advancement.Advancement> advancementIterator = Bukkit.getServer().advancementIterator();
+                            while (advancementIterator.hasNext()){
+                                org.bukkit.advancement.Advancement advancement = advancementIterator.next();
+                                if (advancement.getKey().getKey().contains("recipes/")) continue;
+
+                                for (String criteria :  player.getAdvancementProgress(advancement).getAwardedCriteria()){
+                                    player.getAdvancementProgress(advancement).revokeCriteria(criteria);
+                                }
+                            }
+                        } else {
+                            if (Objects.equals(args[3].split(":")[0], "last_life_3")){
+                                Advancement advancement = AdvancementManager.getLastLifeAdvancementById(args[3].split(":")[0], args[3].split(":")[1]);
+                                if (advancement == null) {
+                                    sender.sendMessage("Unknown advancement");
+                                    return true;
+                                }
+                                advancement.revoke(player);
+                            } else {
+                                org.bukkit.advancement.Advancement advancement = AdvancementManager.getAdvancementById(args[3].split(":")[0], args[3].split(":")[1]);
+                                for (String criteria : player.getAdvancementProgress(advancement).getAwardedCriteria())
+                                    player.getAdvancementProgress(advancement).revokeCriteria(criteria);
+
+                            }
+                        }
+                    }
+                } catch (IndexOutOfBoundsException e){
+                    sender.sendMessage("Mal uso del comando");
+                }
+
+            } else {
                 sender.sendMessage(ChatColor.DARK_AQUA + "----------------------------------");
                 sender.sendMessage(ChatColor.GREEN + "use </game help>");
                 sender.sendMessage(ChatColor.DARK_AQUA + "----------------------------------");
@@ -134,6 +219,5 @@ public class MainCommand implements CommandExecutor, Listener {
         player.sendMessage(ChatColor.DARK_AQUA + "----------------------------------");
         player.sendMessage(ChatColor.GREEN + "use </game help>");
         player.sendMessage(ChatColor.DARK_AQUA + "----------------------------------");
-
     }
 }

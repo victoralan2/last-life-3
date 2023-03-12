@@ -77,6 +77,7 @@ public class TimeSystem {
                 if (Week < 8){
                     if (!inMaintenance){
                         //test if the week has passed
+                        //TODO MAKE ACTUALLY PASS A WEEK
                         if (Instant.from(ZonedDateTime.now(ZoneId.of("Europe/Paris"))).getEpochSecond()  >= TimeSystem.FixedTime + 7/*(86400*7)*/){
                             Bukkit.broadcastMessage("NEXT WEEK");
                             setFixedTime(FixedTime + 7 /*(86400*7)*/);

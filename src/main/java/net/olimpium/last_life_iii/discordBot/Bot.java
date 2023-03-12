@@ -16,7 +16,6 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
@@ -25,8 +24,12 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.Teams.LastLifeTeam;
+import net.olimpium.last_life_iii.commands.TeamChatCommand;
 import net.olimpium.last_life_iii.utils.TimeSystem;
 import net.olimpium.last_life_iii.utils.VerificationSystem;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -34,10 +37,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Bot extends ListenerAdapter implements Listener {
@@ -146,10 +153,10 @@ public class Bot extends ListenerAdapter implements Listener {
             tokenMap.remove(token);
             member.getUser().openPrivateChannel().queue((channel) ->
             {
-                EmbedBuilder VerifyEmbed = new EmbedBuilder();
-                VerifyEmbed.setTitle(":white_check_mark: Se ha verificado correctamente como: "+player.getName()+" :white_check_mark: ", null);
-                VerifyEmbed.setColor(Color.GREEN);
-                channel.sendMessageEmbeds(VerifyEmbed.build()).queue();
+                EmbedBuilder verifyEmbed = new EmbedBuilder();
+                verifyEmbed.setTitle(":white_check_mark: Se ha verificado correctamente como: "+player.getName()+" :white_check_mark: ", null);
+                verifyEmbed.setColor(Color.GREEN);
+                channel.sendMessageEmbeds(verifyEmbed.build()).queue();
 
             });
             return true;
@@ -247,7 +254,7 @@ public class Bot extends ListenerAdapter implements Listener {
     {
         if (!event.getMessage().getAuthor().getId().equals(bot.getSelfUser().getId()) && event.getMessage().getChannel().getId().equals("1036742648758800424")){
 
-            Bukkit.broadcastMessage(ChatColor.DARK_AQUA+"[DISCORD]"+ChatColor.RESET+" <"+event.getMessage().getAuthor().getName()+"> "+event.getMessage().getContentDisplay());
+            Bukkit.broadcastMessage(ChatColor.DARK_AQUA+"[DISCORD]"+ChatColor.RESET+" <"+event.getMessage().getMember().getEffectiveName()+"> "+event.getMessage().getContentDisplay());
             for (Member member : event.getMessage().getMentions().getMembers()){
                 Bukkit.getPlayer(member.getEffectiveName()).playSound(Bukkit.getPlayer(member.getEffectiveName()).getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 2);
             }
@@ -259,15 +266,16 @@ public class Bot extends ListenerAdapter implements Listener {
         //if (!e.getMessage().startsWith("!")) return;
         //String messageWithoutPrefix = Arrays.stream(e.getMessage().split("!")).toList().remove(0);
         //e.setMessage(messageWithoutPrefix);
-        if(!e.getMessage().contains("@") && !e.getMessage().equalsIgnoreCase("Boop")){
-            TextChannel CommunicationChannel = bot.getChannelById(TextChannel.class, "1036742648758800424");
-            CommunicationChannel.sendMessage("**<"+e.getPlayer().getName()+">** "+e.getMessage()).queue();
-        } else if (e.getMessage().equalsIgnoreCase("Boop")){
-            e.setCancelled(true);
-            e.getPlayer().sendMessage(ChatColor.DARK_PURPLE + ChatColor.MAGIC.toString() +"A" +ChatColor.LIGHT_PURPLE+ ChatColor.ITALIC+ "Boop" + ChatColor.RESET +  ChatColor.DARK_PURPLE.toString() +  ChatColor.MAGIC+"A");
-        } else {
-            e.getPlayer().sendMessage(ChatColor.DARK_GRAY + ChatColor.ITALIC.toString()+"No puedes mencionar a usuarios desde aquí");
-        }
-
+        if(!e.getMessage().contains("@") && !e.getMessage().equalsIgnoreCase("Boop")) {
+            if (TeamChatCommand.hasTeamChatToggled.get(e.getPlayer().getName()).equals(false)) {
+                TextChannel CommunicationChannel = bot.getChannelById(TextChannel.class, "1036742648758800424");
+                CommunicationChannel.sendMessage("**<" + e.getPlayer().getName() + ">** " + e.getMessage()).queue();
+            }
+            } else if (e.getMessage().equalsIgnoreCase("Boop")) {
+                e.setCancelled(true);
+                e.getPlayer().sendMessage(ChatColor.DARK_PURPLE + ChatColor.MAGIC.toString() + "A" + ChatColor.LIGHT_PURPLE + ChatColor.ITALIC + "Boop" + ChatColor.RESET + ChatColor.DARK_PURPLE.toString() + ChatColor.MAGIC + "A");
+            } else {
+                e.getPlayer().sendMessage(ChatColor.DARK_GRAY + ChatColor.ITALIC.toString() + "No puedes mencionar a usuarios desde aquí");
+            }
     }
 }

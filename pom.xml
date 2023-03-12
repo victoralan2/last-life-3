@@ -59,7 +59,7 @@
         </repository>
         <repository>
             <id>papermc</id>
-            <url>https://repo.papermc.io/repository/maven-public/</url>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
             <id>dmulloy2-repo</id>
@@ -89,6 +89,7 @@
     </repositories>
 
     <dependencies>
+
         <dependency>
             <groupId>com.github.hamza-cskn.obliviate-invs</groupId>
             <artifactId>core</artifactId>
@@ -134,10 +135,20 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.CroaBeast</groupId>
+            <artifactId>AdvancementInfo</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.4.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.8</version>
         </dependency>
     </dependencies>
 </project>

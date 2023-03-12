@@ -1,5 +1,6 @@
 package net.olimpium.last_life_iii.discordBot;
 
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
@@ -22,6 +23,9 @@ public class BanCommand {
     @SubscribeEvent
     public void onBanCommand(SlashCommandInteractionEvent event){
         if(!event.getName().equals("mineban")) return;
+        if (!event.getMember().getPermissions().contains(Permission.ADMINISTRATOR)) return;
+
+
         Date date = new Date();
         Player player  = Bukkit.getPlayer(event.getOption("usuario").getAsMember().getEffectiveName());
         Member member = event.getOption("usuario").getAsMember();

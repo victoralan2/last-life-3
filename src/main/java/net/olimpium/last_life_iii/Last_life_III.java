@@ -3,6 +3,7 @@ package net.olimpium.last_life_iii;
 import mc.obliviate.inventory.InventoryAPI;
 import net.olimpium.last_life_iii.Enchants.precisionEnchant;
 import net.olimpium.last_life_iii.HealthSystem.LifeSystem;
+import net.olimpium.last_life_iii.Teams.AdvancementTeams;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.advancements.AdvancementManager;
 import net.olimpium.last_life_iii.commands.*;
@@ -21,6 +22,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Team;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -130,19 +132,18 @@ public final class Last_life_III extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CraftingMaps(), this);
         getServer().getPluginManager().registerEvents(new MobSpawnerCanceller(), this);
 
+        getServer().getPluginManager().registerEvents(new TeamChatCommand(),this);
 
-
-        //teams
-        TeamsManager.load();
-        TeamsManager.autoSave();
 
 
         //advancements
         AdvancementManager.createBaseAdvancements();
-        //OverheatedKillAdvancement.create();
-        //OverheatedKill10TimesAdv.create();
         AdvancementManager.registerAdvancements();
 
+        //teams
+        TeamsManager.load();
+        TeamsManager.autoSave();
+        getServer().getPluginManager().registerEvents(new AdvancementTeams(), this);
 
         //time system
         try {
@@ -176,8 +177,14 @@ public final class Last_life_III extends JavaPlugin {
     @Override
     public void onDisable() {
         getServer().getMessenger().unregisterOutgoingPluginChannel(this, "fabric:fabric");
-
         Bot.shutDown();
+        TeamsManager.autoSaveRunnable.cancel();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        TeamsManager.saveAll();
         try {
             dataManager.save();
         } catch (Exception e){

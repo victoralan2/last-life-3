@@ -5,10 +5,14 @@ import com.fren_gor.ultimateAdvancementAPI.advancement.BaseAdvancement;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementDisplay;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementFrameType;
 import com.fren_gor.ultimateAdvancementAPI.visibilities.HiddenVisibility;
+import net.olimpium.last_life_iii.Teams.LastLifeTeam;
+import net.olimpium.last_life_iii.Teams.TeamsManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EnderCrystal;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class StarCollapserKillAdv extends BaseAdvancement implements HiddenVisibility {
 
@@ -25,5 +29,15 @@ public class StarCollapserKillAdv extends BaseAdvancement implements HiddenVisib
             }
         });
     }
+    @Override
+    public void giveReward(@NotNull Player player){
+        //reward here
 
+        //IMPORTANT: DO THIS:
+        if (TeamsManager.isUserInATeam(player.getName())){
+            LastLifeTeam teamOfPlayer = TeamsManager.getTeamOfUser(player.getName());
+            System.out.println("New advancement done!");
+            teamOfPlayer.newLastLifeAdvancement(this);
+        }
+    }
 }

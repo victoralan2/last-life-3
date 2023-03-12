@@ -21,6 +21,8 @@ public enum LastItem {
     TOTEM_RECALL;
 
     public ItemStack getItemStack(){
+        //TODO: ACABAR TODOS LOS ITEMS
+        //TODO: PONER LORE A LOS ITEMS
         List<String> lore = new ArrayList<>();
         String name  = "";
         ItemStack item = new ItemStack(Material.COMMAND_BLOCK);
@@ -54,6 +56,10 @@ public enum LastItem {
             }
             case MIDAS_PICKAXE -> {
                 name = ChatColor.GOLD + "Pico de Midas";
+                lore.add(ChatColor.YELLOW + "Para hacer uso de este");
+                lore.add(ChatColor.YELLOW + "pico necesitas un poco");
+                lore.add(ChatColor.YELLOW + "de experiencia previa.");
+
                 item.setType(Material.GOLDEN_PICKAXE);
                 itemMeta = item.getItemMeta();
             }

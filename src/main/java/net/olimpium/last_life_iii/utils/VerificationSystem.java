@@ -27,7 +27,7 @@ public class VerificationSystem implements Listener {
         getServer().getWorlds().add(verifyWorld);
         if (isVerified(e.getPlayer().getName())) {
             if (TimeSystem.getFixedTime() == 0){
-                e.getPlayer().sendTitle("", ChatColor.RED +"El survival no ha empezado aún", 5, 500, 5);
+                e.getPlayer().sendTitle("", ChatColor.RED +"El survival no ha empezado aún", 5, 100, 5);
                 e.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(0f);
 
                 for (Player player : verifyWorld.getPlayers()){
@@ -53,7 +53,7 @@ public class VerificationSystem implements Listener {
                 }
             }
         } else {
-            e.getPlayer().sendTitle( "",ChatColor.RED +"No estas verificado", 5, 500, 5);
+            e.getPlayer().sendTitle( "",ChatColor.RED +"No estas verificado", 5, 200, 5);
             e.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(0f);
             for (Player player : verifyWorld.getPlayers()){
                 for (Player player2hide : verifyWorld.getPlayers()){
