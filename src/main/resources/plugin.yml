@@ -13,3 +13,11 @@ commands:
   crash:
     description: LOL
     usage: /<command> <player> <type>
+  teamchat:
+    description: Altera entre el chat de equipo y el global
+    usage: /<command>
+    aliases: [tc]
+  teammenu:
+    description: Abre el menu de tu team
+    usage: /<command>
+    aliases: [tm]

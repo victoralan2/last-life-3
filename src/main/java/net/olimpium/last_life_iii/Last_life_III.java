@@ -5,10 +5,7 @@ import net.olimpium.last_life_iii.Enchants.precisionEnchant;
 import net.olimpium.last_life_iii.HealthSystem.LifeSystem;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.advancements.AdvancementManager;
-import net.olimpium.last_life_iii.commands.CrashCommand;
-import net.olimpium.last_life_iii.commands.LinkCommand;
-import net.olimpium.last_life_iii.commands.MainCommand;
-import net.olimpium.last_life_iii.commands.MainCommandCompleter;
+import net.olimpium.last_life_iii.commands.*;
 import net.olimpium.last_life_iii.discordBot.Bot;
 import net.olimpium.last_life_iii.items.CraftingMaps;
 import net.olimpium.last_life_iii.items.MidasSword;
@@ -84,6 +81,7 @@ public final class Last_life_III extends JavaPlugin {
         getPlugin().getCommand("LL3").setTabCompleter(new MainCommandCompleter());
         getPlugin().getCommand("link").setExecutor(new LinkCommand());
         getPlugin().getCommand("crash").setExecutor(new CrashCommand());
+        getPlugin().getCommand("teamchat").setExecutor(new TeamChatCommand());
 
 
         // Health

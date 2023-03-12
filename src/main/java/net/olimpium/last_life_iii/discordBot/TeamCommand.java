@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
+import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.minecraft.server.v1_16_R3.TileInventory;
@@ -38,6 +39,9 @@ public class TeamCommand extends ListenerAdapter {
 		if(!event.getName().equals("team")) return;
 		if (TimeSystem.getFixedTime() != 0 && TimeSystem.getWeek() != 0){
 			event.reply("No se pueden cambiar los equipos después del comienzo del survival").setEphemeral(true).queue();
+			System.out.println("EPOCH: " + TimeSystem.getFixedTime());
+			System.out.println("Weed: " + TimeSystem.getWeek());
+
 			return;
 		}
 		try {
@@ -262,6 +266,7 @@ public class TeamCommand extends ListenerAdapter {
 			Member member = lastGuild.getMemberById(user.getId());
 			if (!invitesHashMap.containsKey(member)){
 				event.reply("Esta invitación ya ha expirado").setEphemeral(true).queue();
+				event.getMessage().delete().queue();
 				return;
 			}
 
