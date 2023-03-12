@@ -1,5 +1,6 @@
 package net.olimpium.last_life_iii;
 
+import mc.obliviate.inventory.InventoryAPI;
 import net.olimpium.last_life_iii.Enchants.precisionEnchant;
 import net.olimpium.last_life_iii.HealthSystem.LifeSystem;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
@@ -68,6 +69,9 @@ public final class Last_life_III extends JavaPlugin {
         }
         getServer().getPluginManager().registerEvents(new Bot(), this);
 
+        //MENU + GUI FRAMEWORK
+        new InventoryAPI(this).init();
+        getPlugin().getCommand("teammenu").setExecutor(new TeamMenuCommand());
 
         //FABRIC MOD
         getServer().getMessenger().registerOutgoingPluginChannel(this, "lastlife:packet");
