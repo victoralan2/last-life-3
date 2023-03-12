@@ -1,6 +1,7 @@
 package net.olimpium.last_life_iii.Teams;
 
 
+import net.dv8tion.jda.api.entities.Role;
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.discordBot.TeamCommand;
 import org.bukkit.Bukkit;
@@ -41,7 +42,10 @@ public class TeamsManager {
 		teamsFile.delete();
 		File inventoryTeamsFile = new File(teamsDir + "/inv/inv_" + team.getName() + ".yml");
 		inventoryTeamsFile.delete();
-		TeamCommand.removeRoleOf(team);
+		Role role = TeamCommand.getRoleOf(team);
+		if (role != null){
+			role.delete().queue();
+		}
 	}
 	public static void registerTeam(LastLifeTeam team){
 		saveTeam(team);

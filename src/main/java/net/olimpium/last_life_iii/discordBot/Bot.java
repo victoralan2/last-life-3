@@ -26,6 +26,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.Teams.LastLifeTeam;
 import net.olimpium.last_life_iii.utils.TimeSystem;
+import net.olimpium.last_life_iii.utils.VerificationSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -87,13 +88,15 @@ public class Bot extends ListenerAdapter implements Listener {
                         .addSubcommands(
                                 new SubcommandData("create","Crea un nuevo team.")
                                         .addOption(OptionType.STRING, "nombre", "El nombre del team.", true)
-                                        .addOption(OptionType.STRING, "color", "El color del team", true, true),
+                                        .addOption(OptionType.STRING, "color", "El color **EN HEXADECIMAL**", true),
                                 new SubcommandData("invite","Crea un nuevo team.")
                                         .addOption(OptionType.USER,"usuario","Invita un usuario a tu team.", true),
                                 new SubcommandData("remove", "Borra el team actual."),
-                                new SubcommandData("leave","Sales del team actual"),
                                 new SubcommandData("kick","Expulsa a un usuario del team.")
-                                        .addOption(OptionType.USER,"usuario","El usuario que será expulsado del team.",true)
+                                        .addOption(OptionType.USER,"usuario","El usuario que será expulsado del team.",true),
+                                new SubcommandData("leave","Salirte del team actual"),
+                                new SubcommandData("list","Lista de los teams (Solo para admins)")
+
                         )
                         .setGuildOnly(true),
                 Commands.context(Command.Type.USER,"Banear de Last Life")
@@ -122,17 +125,21 @@ public class Bot extends ListenerAdapter implements Listener {
         bot.shutdown();
     }
     //when the player is registered
-    public static boolean playerRegistered(String token, Player player){
+    public static Boolean playerRegistered(String token, Player player){
         //checks if it has a token
         if (tokenMap.containsKey(token)){
-
+            for (Member member : LastLifeGuild.getMembersByEffectiveName(player.getName(), false)){
+                if (VerificationSystem.isVerified(member.getEffectiveName())){
+                    return null;
+                }
+            }
             Member member = LastLifeGuild.retrieveMemberById(tokenMap.get(token)).complete();
 
             //adds roles
             member.getGuild().addRoleToMember(member, member.getGuild().getRoleById("1009077402896433183")).queue();
             member.getGuild().addRoleToMember(member, member.getGuild().getRoleById("913493620210925568")).queue();
             if (!member.getEffectiveName().equals(player.getName())){
-                //modyfies name
+                //modify name
                 member.modifyNickname(player.getName()).queue();
             }
             //removes token from list

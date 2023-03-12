@@ -25,7 +25,7 @@ public class VerificationSystem implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         getServer().getWorlds().add(verifyWorld);
-        if (isVerified(e.getPlayer())) {
+        if (isVerified(e.getPlayer().getName())) {
             if (TimeSystem.getFixedTime() == 0){
                 e.getPlayer().sendTitle("", ChatColor.RED +"El survival no ha empezado aún", 5, 500, 5);
                 e.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(0f);
@@ -73,31 +73,31 @@ public class VerificationSystem implements Listener {
         normalWorld.setTime(0);
         normalWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         for (Player player : Bukkit.getOnlinePlayers()){
-            if (isVerified(player)){
+            if (isVerified(player.getName())){
                 player.teleport(normalWorld.getSpawnLocation());
                 player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
                 player.getInventory().clear();
                 player.setGameMode(GameMode.SURVIVAL);
                 for (Player playerToShow : Bukkit.getOnlinePlayers()){
                     if (player == playerToShow) continue;
-                    player.showPlayer(playerToShow);
-                    playerToShow.showPlayer(player);
+                    player.showPlayer(Last_life_III.getPlugin(), player);
+                    playerToShow.showPlayer(Last_life_III.getPlugin(), player);
                 }
             }
         }
     }
-    public static boolean isVerified(Player player){
+    public static boolean isVerified(String name){
         for(Member member : Bot.bot.getGuildById("913493619875385425").getMembers()){
-            if (!member.getEffectiveName().equals(player.getName())) continue;
-            if (member.getRoles().isEmpty()) return false;
+            if (!member.getEffectiveName().equals(name)) continue;
+            if (!member.getRoles().isEmpty()) return true;
         }
-        return true;
+        return false;
     }
     
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
 
-        if (!isVerified(e.getPlayer())) {
+        if (!isVerified(e.getPlayer().getName())) {
             e.setCancelled(true);
             e.getPlayer().sendMessage("Necesitas estar verificado para hablar");
         }

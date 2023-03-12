@@ -36,7 +36,7 @@ public class MainCommand implements CommandExecutor, Listener {
                 player.sendMessage(ChatColor.GREEN + "/lastlife team [create/add] <teamname> [player]" + ChatColor.LIGHT_PURPLE + "  =>  the manager for last life teams");
                 player.sendMessage(ChatColor.DARK_AQUA + "----------------------------------");*/
             } else if (args[0].equalsIgnoreCase("start")) {
-                SubCommands.CommandStart(sender);
+                SubCommands.commandStart(sender);
             } else if (args[0].equalsIgnoreCase("close")) {
                 if (TimeSystem.Week != 0) {
                     if (!TimeSystem.getIsInMaintenance()) {

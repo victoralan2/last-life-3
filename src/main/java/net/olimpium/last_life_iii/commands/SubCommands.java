@@ -75,7 +75,7 @@ public class SubCommands {
             }
         }
 
-        public static void CommandStart (Player player){
+        public static void commandStart (Player player){
             if (TimeSystem.Week == 0) {
                 Bukkit.broadcastMessage(ChatColor.RED + "LAST LIFE HAS STARTED!");
                 for (Player player2 : Bukkit.getOnlinePlayers()){

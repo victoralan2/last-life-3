@@ -16,7 +16,10 @@ public class LinkCommand implements CommandExecutor {
         if (commandSender instanceof Player) {
             Player player = ((Player) commandSender).getPlayer();
             if(args.length == 1){
-                boolean tokenFound = Bot.playerRegistered(args[0].toUpperCase(), player);
+                Boolean tokenFound = Bot.playerRegistered(args[0].toUpperCase(), player);
+                if (tokenFound == null){
+                    player.sendMessage(ChatColor.RED+"Ya hay alguien registrado con ese nombre, contacte a los administradores si esto es un error.");
+                }
                 if(tokenFound){
                     VerificationSystem.playerVerified(player);
                 } else {

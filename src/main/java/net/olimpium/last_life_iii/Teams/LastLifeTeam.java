@@ -112,9 +112,9 @@ public class LastLifeTeam implements Serializable {
             String name = scanner.nextLine();
             Color color = new Color(Integer.parseInt(scanner.nextLine()));
             ArrayList<String> playersNames = new ArrayList<>();
-            String uuids = scanner.nextLine();
+            String names = scanner.nextLine();
 
-            Collections.addAll(playersNames, uuids.split("__"));
+            Collections.addAll(playersNames, names.split("#"));
             int upgradeAmmount = Integer.parseInt(scanner.nextLine());
            return new LastLifeTeam(name, color, playersNames, upgradeAmmount, inventory);
         } catch (Exception e){
@@ -130,14 +130,8 @@ public class LastLifeTeam implements Serializable {
             fileWriter.write(team.getName() + "\n");
 
             fileWriter.write(team.color.getRGB() + "\n");
-            boolean isFirst = true;
             for (String player : team.getMembers()){
-                if (isFirst){
-                    fileWriter.write(player);
-                    isFirst = false;
-                } else{
-                    fileWriter.write(player + "__");
-                }
+                fileWriter.write(player + "#");
             }
             fileWriter.write("\n");
             fileWriter.write(team.getUpgradeAmount().toString() + "\n");
