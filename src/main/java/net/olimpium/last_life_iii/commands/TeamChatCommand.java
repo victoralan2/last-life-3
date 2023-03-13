@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class TeamChatCommand implements CommandExecutor, Listener {
@@ -37,15 +36,17 @@ public class TeamChatCommand implements CommandExecutor, Listener {
 	}
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e){
-		if (!TeamsManager.isUserInATeam(e.getPlayer().getName())) return;
-		if(hasTeamChatToggled.get(e.getPlayer().getName()).equals(true)){
-			e.setCancelled(true);
+		if (!TeamsManager.isUserInATeam(e.getPlayer().getName())){
+			e.getPlayer().sendMessage(ChatColor.RED+"Tienes que estar en un equipo.");
+		}
+		if(hasTeamChatToggled.get(e.getPlayer().getName())){
 			for (String memberName : TeamsManager.getTeamByName(e.getPlayer().getName()).getMembers()){
 				Player member = Bukkit.getPlayer(memberName);
 				if (member == null) continue;
-				Bukkit.getPlayer(memberName).sendMessage("["+ChatColor.GREEN+"Team"+ChatColor.RESET+"] "+e.getMessage());
+				member.sendMessage("["+ChatColor.GREEN+"Team"+ChatColor.RESET+"] "+e.getMessage());
 
 			}
+			e.setCancelled(true);
 		}
 	}
 }
