@@ -6,7 +6,6 @@ import net.olimpium.last_life_iii.Teams.LastLifeTeam;
 import net.olimpium.last_life_iii.Teams.TeamLevel;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.gui.Heads;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -67,9 +66,9 @@ public class TeamMenu extends Gui {
 
 		stats.appendLore(ChatColor.RESET.toString() + ChatColor.WHITE + "Logros totales:");
 		int totalAdvancementsNoChallenges = TeamsManager.advancementsNoChallengeOf(team, false);
-		int totalChallenges = TeamsManager.challangesOf(team, false);
+		int totalChallenges = TeamsManager.challengesOf(team, false);
 		int uniqueAdvancements = TeamsManager.advancementsNoChallengeOf(team, true);
-		int uniqueChallenges = TeamsManager.challangesOf(team, true);
+		int uniqueChallenges = TeamsManager.challengesOf(team, true);
 
 		stats.appendLore(ChatColor.RESET.toString() + ChatColor.YELLOW + "    " + totalAdvancementsNoChallenges + " - Logros");
 		stats.appendLore(ChatColor.RESET.toString() + ChatColor.YELLOW + "    " + totalChallenges + " - Desafíos");
@@ -82,7 +81,6 @@ public class TeamMenu extends Gui {
 		Icon sack = new Icon(Heads.SACK.getItemStack());
 		sack.setName((ChatColor.RESET.toString() + ChatColor.YELLOW + ChatColor.BOLD + "Saco de trinkets"));
 		sack.setLore(ChatColor.RESET.toString() + ChatColor.GRAY + " > Haz click para abrir");
-
 
 
 		// ADD ITEMS TO GUI

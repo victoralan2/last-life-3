@@ -89,7 +89,6 @@
     </repositories>
 
     <dependencies>
-
         <dependency>
             <groupId>com.github.hamza-cskn.obliviate-invs</groupId>
             <artifactId>core</artifactId>

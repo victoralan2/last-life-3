@@ -58,8 +58,8 @@ public class TeamCommand extends ListenerAdapter {
 						System.out.println("Someone tried to create a team with an existing name");
 						return;
 					}
-					if (event.getOption("nombre").getAsString().length() >= 28){
-						event.reply("El tamaño maxim del nombre del team es de 28 caracteres").setEphemeral(true).queue();
+					if (event.getOption("nombre").getAsString().length() >= 16){
+						event.reply("El tamaño maxim del nombre del team es de 16 caracteres").setEphemeral(true).queue();
 						return;
 					}
 					LastLifeTeam newTeam = new LastLifeTeam(teamName, color, event.getMember().getEffectiveName());

@@ -1,21 +1,21 @@
 package net.olimpium.last_life_iii.Teams;
 
 
-import com.fren_gor.ultimateAdvancementAPI.AdvancementMain;
-import com.fren_gor.ultimateAdvancementAPI.database.TeamProgression;
 import com.fren_gor.ultimateAdvancementAPI.nms.wrappers.advancement.AdvancementFrameTypeWrapper;
 import me.croabeast.advancementinfo.AdvancementInfo;
 import net.dv8tion.jda.api.entities.Role;
-import net.minecraft.server.v1_16_R3.AdvancementFrameType;
+import net.md_5.bungee.chat.ComponentSerializer;
 import net.olimpium.last_life_iii.Last_life_III;
-import net.olimpium.last_life_iii.advancements.AdvancementManager;
 import net.olimpium.last_life_iii.discordBot.TeamCommand;
+import net.olimpium.last_life_iii.utils.BukkitSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.advancement.Advancement;
-import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -54,7 +54,7 @@ public class TeamsManager {
 		teamsFile.delete();
 		File sacksTeamsFile = new File(teamsDir + "/inv/inv_" + team.getName() + ".yml");
 		File enderChestTeamsFile = new File(teamsDir + "/inv/inv_" + team.getName() + ".yml");
-		enderChestTeamsFile.delete();
+		sacksTeamsFile.delete();
 		enderChestTeamsFile.delete();
 		Role role = TeamCommand.getRoleOf(team);
 		if (role != null){
@@ -75,8 +75,8 @@ public class TeamsManager {
 		return 0;
 
 	}
-	public static int challangesOf(LastLifeTeam team, boolean unique){
-
+	@Deprecated
+	public static int challangesOfA(LastLifeTeam team, boolean unique){
 
 		ArrayList<Advancement> challenges = new ArrayList<>();
 		ArrayList<com.fren_gor.ultimateAdvancementAPI.advancement.Advancement> challenges2 = new ArrayList<>();
@@ -110,6 +110,49 @@ public class TeamsManager {
 			}
 		}
 		return challenges.size() + challenges2.size();
+	}
+	@Deprecated
+	public static int advancementsNoChallengeOfA(LastLifeTeam team, boolean unique){
+
+		ArrayList<Advancement> challenges = new ArrayList<>();
+		ArrayList<com.fren_gor.ultimateAdvancementAPI.advancement.Advancement> challenges2 = new ArrayList<>();
+
+		for (String player : team.getMembers()){
+			Player member = Bukkit.getPlayer(player);
+			for (Advancement advancement : team.getAdvancementsDone()) {
+				if (advancement.getKey().getKey().contains("recipes/")) continue;
+
+				AdvancementInfo info = new AdvancementInfo(advancement);
+				if (info.getFrameType().equals("unknown")) continue;
+				if (!info.getFrameType().equals("challenge")) {
+					if (!unique) {
+						challenges.add(advancement);
+					} else if (!challenges.contains(advancement)) {
+						challenges.add(advancement);
+					}
+				}
+			}
+
+			for (com.fren_gor.ultimateAdvancementAPI.advancement.Advancement advancement : team.getLastAdvancementDone()) {
+				System.out.println(member.getName());
+				boolean isChallenge = advancement.getNMSWrapper().getDisplay().getAdvancementFrameType().getFrameType().equals(AdvancementFrameTypeWrapper.FrameType.CHALLENGE);
+				if (!isChallenge) {
+					if (!unique) {
+						challenges2.add(advancement);
+					} else if (!challenges2.contains(advancement)) {
+						challenges2.add(advancement);
+					}
+				}
+			}
+		}
+		return challenges.size() + challenges2.size();
+	}
+	@Deprecated
+	public static int totalAdvancementsOfA(LastLifeTeam team, boolean unique){
+		return advancementsNoChallengeOf(team, unique) + challengesOf(team, unique);
+	}
+	public static int totalAdvancementsOf(LastLifeTeam team, boolean unique){
+		return advancementsNoChallengeOf(team, unique) + challengesOf(team, unique);
 	}
 	public static int advancementsNoChallengeOf(LastLifeTeam team, boolean unique){
 
@@ -146,8 +189,16 @@ public class TeamsManager {
 		}
 		return challenges.size() + challenges2.size();
 	}
-	public static int totalAdvancementsOf(LastLifeTeam team, boolean unique){
-		return advancementsNoChallengeOf(team, unique) + challangesOf(team, unique);
+	public static int challengesOf(LastLifeTeam team, boolean unique){
+		if (!unique) return team.getAdvancementsDone().stream().filter(advancement -> {
+			AdvancementInfo info = new AdvancementInfo(advancement);
+			if (advancement.getKey().getKey().contains("recipes/")) return false;
+			if (info.getFrameType().equals("unknown")) return false;
+			if (!info.getFrameType().equals("challenge")) return false;
+			return true;
+		}).toList().size()
+				+ team.getLastAdvancementDone().stream().filter(advancement -> advancement.getNMSWrapper().getDisplay().getAdvancementFrameType().getFrameType().equals(AdvancementFrameTypeWrapper.FrameType.CHALLENGE)).toList().size();
+		return team.getAdvancementsDone().stream().distinct().toList().size() + team.getLastAdvancementDone().stream().distinct().toList().size();
 	}
 	public static void registerTeam(LastLifeTeam team){
 		saveTeam(team);
@@ -183,8 +234,8 @@ public class TeamsManager {
 			if (!trinketSackFile.exists())
 				trinketSackFile.createNewFile();
 			LastLifeTeam.toFile(teamFile, team);
-			saveInventoryToFile(team.getEnderChest(), enderChestFile, team.getName());
-			saveInventoryToFile(team.getTrinketSack(), trinketSackFile, team.getName());
+			saveInventoryToFile(team.getEnderChest(), enderChestFile);
+			saveInventoryToFile(team.getTrinketSack(), trinketSackFile);
 
 		} catch (Exception e){
 			e.printStackTrace();
@@ -203,67 +254,32 @@ public class TeamsManager {
 			teamList.add(team);
 		}
 	}
-	public static void saveInventoryToFile(Inventory inventory, File file, String invTitle) {
-		Yaml yaml = createYaml();
-
-		Map<String, Object> data = new HashMap<>();
-		data.put("size", inventory.getSize());
-		//TODO make title work
-		data.put("title", invTitle);
-
-		List<Map<String, Object>> items = new ArrayList<>();
-		for (int i = 0; i < inventory.getSize(); i++) {
-			ItemStack item = inventory.getItem(i);
-			if (item != null) {
-				items.add(item.serialize());
-			} else {
-				items.add(null);
-			}
-		}
-		data.put("items", items);
-
-		String yamlData = yaml.dump(data);
-
-		try (FileWriter writer = new FileWriter(file)) {
-			writer.write(yamlData);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static Yaml createYaml() {
-		DumperOptions options = new DumperOptions();
-		options.setIndent(2);
-		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-		return new Yaml(options);
-	}
-	public static Inventory loadInventoryFromFile(File file) {
-		Yaml yaml = createYaml();
-
-		String yamlData;
+	public static void saveInventoryToFile(Inventory inventory, File file) {
+		String invString = BukkitSerializer.inventoryToBase64(inventory);
 		try {
-			yamlData = Files.readString(file.toPath());
-		} catch (IOException e) {
+			if (!file.exists()) file.createNewFile();
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write(invString);
+			fileWriter.close();
+		} catch (Exception e){
 			e.printStackTrace();
-			return null;
 		}
 
-		Map<String, Object> data = yaml.load(yamlData);
+	}
 
-		int size = (int) data.get("size");
-		String title = (String) data.get("title");
-
-		Inventory inventory = Bukkit.getServer().createInventory(null, size, title);
-
-		List<Map<String, Object>> items = (List<Map<String, Object>>) data.get("items");
-		for (int i = 0; i < items.size(); i++) {
-			Map<String, Object> itemData = items.get(i);
-			if (itemData != null) {
-				ItemStack item = ItemStack.deserialize(itemData);
-				inventory.setItem(i, item);
+	public static Inventory loadInventoryFromFile(File file) {
+		Inventory inventory = null;
+		try {
+			Scanner scanner = new Scanner(file);
+			String string = "";
+			while (scanner.hasNextLine()){
+				string+=scanner.nextLine() + "\n";
 			}
-		}
+			inventory = BukkitSerializer.fromBase64(string);
 
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 		return inventory;
 	}
 

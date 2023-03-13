@@ -14,7 +14,7 @@ public class TeamMenuCommand implements CommandExecutor {
 		Player player = (Player) commandSender;
 		TeamMenu menu = new TeamMenu(player);
 		menu.open();
-//		menu.
+
 		return true;
 	}
 }

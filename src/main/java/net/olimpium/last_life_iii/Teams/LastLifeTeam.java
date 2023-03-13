@@ -158,6 +158,7 @@ public class LastLifeTeam implements Serializable {
 
             String advancementsNoLastString = scanner.nextLine();
             for (String advancementStringNoLast : advancementsNoLastString.split("##///")) {
+                if (advancementStringNoLast.isEmpty() || advancementStringNoLast.isBlank()) continue;
                 Advancement ad = AdvancementManager.getAdvancementById(advancementStringNoLast.split("_-__")[0], advancementStringNoLast.split("_-__")[1]);
                 if (ad == null){
                     System.out.println("KEY: " + advancementStringNoLast.split("_-__")[1] + ".");
@@ -169,8 +170,9 @@ public class LastLifeTeam implements Serializable {
             }
             String advancementsLastString = scanner.nextLine();
             for (String advancementLast : advancementsLastString.split("##///")){
+                if (advancementLast.isEmpty() || advancementLast.isBlank()) continue;
+
                 AdvancementManager.advancementList.forEach(adv -> System.out.println(adv.getKey().getKey()));
-                System.out.println(AdvancementManager.advancementList.stream().anyMatch(filterAdvancement -> filterAdvancement.getKey().getKey().equals(advancementLast.split("_-__")[1])) + " : " + Arrays.toString(advancementLast.split("_-__")));
 
                 if (AdvancementManager.advancementList.stream().anyMatch(filterAdvancement -> filterAdvancement.getKey().getKey().equals(advancementLast.split("_-__")[1]))){
                     com.fren_gor.ultimateAdvancementAPI.advancement.Advancement ad = AdvancementManager.advancementList.stream().filter(filterAdvancement -> filterAdvancement.getKey().getNamespace().equals(advancementLast.split("_-__")[0]) && filterAdvancement.getKey().getKey().equals(advancementLast.split("_-__")[1])).toList().get(0);

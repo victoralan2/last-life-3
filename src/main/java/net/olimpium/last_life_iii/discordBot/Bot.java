@@ -267,6 +267,7 @@ public class Bot extends ListenerAdapter implements Listener {
         //String messageWithoutPrefix = Arrays.stream(e.getMessage().split("!")).toList().remove(0);
         //e.setMessage(messageWithoutPrefix);
         if(!e.getMessage().contains("@") && !e.getMessage().equalsIgnoreCase("Boop")) {
+            TeamChatCommand.hasTeamChatToggled.putIfAbsent(e.getPlayer().getName(), false);
             if (TeamChatCommand.hasTeamChatToggled.get(e.getPlayer().getName()).equals(false)) {
                 TextChannel CommunicationChannel = bot.getChannelById(TextChannel.class, "1036742648758800424");
                 CommunicationChannel.sendMessage("**<" + e.getPlayer().getName() + ">** " + e.getMessage()).queue();

@@ -6,6 +6,7 @@ import net.olimpium.last_life_iii.HealthSystem.LifeSystem;
 import net.olimpium.last_life_iii.Teams.AdvancementTeams;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
 import net.olimpium.last_life_iii.advancements.AdvancementManager;
+import net.olimpium.last_life_iii.ai.PlayerInformationRecopilador;
 import net.olimpium.last_life_iii.commands.*;
 import net.olimpium.last_life_iii.discordBot.Bot;
 import net.olimpium.last_life_iii.items.CraftingMaps;
@@ -134,7 +135,8 @@ public final class Last_life_III extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new TeamChatCommand(),this);
 
-
+        // AI
+        getServer().getPluginManager().registerEvents(new PlayerInformationRecopilador(), this);
 
         //advancements
         AdvancementManager.createBaseAdvancements();
