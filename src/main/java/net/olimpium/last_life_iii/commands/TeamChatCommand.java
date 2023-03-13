@@ -1,8 +1,11 @@
 package net.olimpium.last_life_iii.commands;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.olimpium.last_life_iii.Teams.TeamsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,13 +27,18 @@ public class TeamChatCommand implements CommandExecutor, Listener {
 			if(!value){
 				hasTeamChatToggled.replace(player.getName(),true);
 				commandSender.sendMessage(ChatColor.GREEN+"Se ha activado el chat de equipo.");
+				((Player) commandSender).playSound(((Player) commandSender).getLocation(), Sound.BLOCK_LEVER_CLICK,1,2);
 			}else{
 				hasTeamChatToggled.replace(player.getName(),false);
 				commandSender.sendMessage(ChatColor.GRAY+"Se ha desactivado el chat de equipo.");
+				((Player) commandSender).playSound(((Player) commandSender).getLocation(), Sound.BLOCK_LEVER_CLICK,1,0);
+
 			}
 		}else {
 			hasTeamChatToggled.put(player.getName(), true);
 			commandSender.sendMessage(ChatColor.GREEN + "Se ha activado el chat de equipo.");
+			((Player) commandSender).playSound(((Player) commandSender).getLocation(), Sound.BLOCK_LEVER_CLICK,1,2);
+
 		}
 		return true;
 	}
