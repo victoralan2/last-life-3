@@ -26,11 +26,14 @@ public class PlayerInformationRecopilador implements Listener {
 				Last_life_III.dataManager.addData(uuidjsonObjectHashMap.get(uuid), dataFile);
 			});
 	}
-	public static void update(){
-	}
+
 	@EventHandler
 	public void onPlayerPlaceBlock(BlockPlaceEvent e){
+		System.out.println("LOC: " + e.getBlock().getLocation());
+
 		init();
+		System.out.println("LOC: " + e.getBlock().getLocation());
+
 		if (!playersBlocks.containsKey(e.getPlayer())){
 			ArrayList<Block> b = new ArrayList<>();
 			b.add(e.getBlock());

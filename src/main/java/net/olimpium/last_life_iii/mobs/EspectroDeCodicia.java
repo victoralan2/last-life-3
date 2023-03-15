@@ -1,5 +1,6 @@
 package net.olimpium.last_life_iii.mobs;
 
+import net.olimpium.last_life_iii.utils.EXPUtils;
 import net.olimpium.last_life_iii.utils.EntityNBTManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,15 +30,18 @@ public class EspectroDeCodicia implements Listener {
 	public void onHit(EntityDamageByEntityEvent e) {
 		if (e.getDamager().getCustomName() == null) return;
 		if(!(e.getDamager().getCustomName().equals(ChatColor.GOLD+"Espectro de la Codicia"))) return;
-		if(e.getEntity() instanceof Player){
-			Player player = (Player) e.getEntity();
+		if(e.getEntity() instanceof Player player){
 			if(player.getLevel()<1) return;
+			float expBefore = EXPUtils.getPlayerExp(player);
 			player.setLevel(player.getLevel()-1);
-			Bukkit.broadcastMessage(EntityNBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.INTEGER,"levelStolen",Integer.class).toString());
-			if(EntityNBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.INTEGER,"levelStolen",Integer.class) != null){
-				int levelsStolen = EntityNBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.INTEGER,"levelStolen",Integer.class);
-				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.INTEGER,levelsStolen+1,"levelStolen");
-				Bukkit.broadcastMessage(levelsStolen+"");
+			float expAfter = EXPUtils.getPlayerExp(player);
+			float levelEXP = expBefore-expAfter;
+			Bukkit.broadcastMessage("EXP BEFORE: " + expBefore);
+			Bukkit.broadcastMessage("EXP AFTER: " + expAfter);
+			if(EntityNBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.FLOAT,"EXPStolen",Float.class) != null){
+				float levelsStolen = EntityNBTManager.readNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT,"EXPStolen",Float.class);
+				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT, levelEXP + levelsStolen,"EXPStolen");
+				Bukkit.broadcastMessage("2.Actual EXP: "+levelsStolen+levelEXP);
 			}else{
 				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.INTEGER,1,"levelStolen");
 				Bukkit.broadcastMessage("1");
