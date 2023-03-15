@@ -49,7 +49,6 @@ public final class Last_life_III extends JavaPlugin {
         plugin = this;
         ip = this.getServer().getIp();
 
-
         //data manager
         try {
             dataManager =  new DataManager();
@@ -194,6 +193,7 @@ public final class Last_life_III extends JavaPlugin {
         }
         //enchantmnets
         precisionEnchant = new precisionEnchant("precision"); unrRegisterEnchantment(precisionEnchant);
+
     }
 
 
