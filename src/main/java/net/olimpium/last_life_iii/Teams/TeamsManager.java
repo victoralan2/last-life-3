@@ -4,27 +4,22 @@ package net.olimpium.last_life_iii.Teams;
 import com.fren_gor.ultimateAdvancementAPI.nms.wrappers.advancement.AdvancementFrameTypeWrapper;
 import me.croabeast.advancementinfo.AdvancementInfo;
 import net.dv8tion.jda.api.entities.Role;
-import net.md_5.bungee.chat.ComponentSerializer;
 import net.olimpium.last_life_iii.Last_life_III;
+import net.olimpium.last_life_iii.advancements.AdvancementManager;
 import net.olimpium.last_life_iii.discordBot.TeamCommand;
 import net.olimpium.last_life_iii.utils.BukkitSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 public class TeamsManager {
 	public static File teamsDir;
@@ -61,20 +56,76 @@ public class TeamsManager {
 			role.delete().queue();
 		}
 	}
-	public static int getLevelByExp(int exp){
 
-		return 0;
+	public static int getMaxTeamEXP(){
+		List<Advancement> advancementList = new ArrayList<>();
+
+		Iterator<Advancement> iterator = Bukkit.getServer().advancementIterator();
+		while (iterator.hasNext()){
+			advancementList.add(iterator.next());
+		}
+		List<com.fren_gor.ultimateAdvancementAPI.advancement.Advancement> advancementListLL3 = AdvancementManager.advancementList;
+
+		int lastLifeChallenges = advancementListLL3.stream().filter(ad -> ad.getNMSWrapper().getDisplay().getAdvancementFrameType().getFrameType().equals(AdvancementFrameTypeWrapper.FrameType.CHALLENGE)).toList().size();
+		int vanillaChallenges = advancementList.stream().filter(ad ->{
+			if (ad.getKey().getKey().contains("recipes/")) return false;
+			AdvancementInfo advancementInfo = new AdvancementInfo(ad);
+			return advancementInfo.getFrameType().equalsIgnoreCase("challenge");
+		}).toList().size();
+		int lastLifeAdvancements = advancementListLL3.stream().filter(ad -> !ad.getNMSWrapper().getDisplay().getAdvancementFrameType().getFrameType().equals(AdvancementFrameTypeWrapper.FrameType.CHALLENGE)).toList().size();
+		int vanillaAdvancements = advancementList.stream().filter(ad ->{
+			AdvancementInfo advancementInfo = new AdvancementInfo(ad);
+			if (ad.getKey().getKey().contains("recipes/")) return false;
+
+			return !advancementInfo.getFrameType().equalsIgnoreCase("challenge");
+		}).toList().size();
+		int exp = 5*lastLifeChallenges + 3*vanillaChallenges + 2*lastLifeAdvancements + vanillaAdvancements;
+		return exp;
 	}
-	public static int getExpByLevel(int level){
+	public static float getLevelByExp(double exp){
 
+		// level = exp^ (1 / log_expToMaxLevel(maxLevel / 1.2))
 
-		return 0;
+		int maxLevel = 10;
+		int maxEXP = getMaxTeamEXP();
+		double expToMaxLevel = maxEXP / 1.2d;
+		double functionExponent = 1 / (Math.log(maxLevel) / Math.log(expToMaxLevel));
+		Bukkit.broadcastMessage("EXPONENT: " + functionExponent);
+		return (float) Math.pow(exp, 1/functionExponent);
+	}
+	public static double getExpByLevel(int level){
 
+		// EXP = level ^ (1 / log_expToMaxLevel(maxLevel / 1.2))
+
+		int maxLevel = 10;
+		int maxEXP = getMaxTeamEXP();
+		double expToMaxLevel = maxEXP / 1.2d;
+		double functionExponent = 1 / (Math.log(maxLevel) / Math.log(expToMaxLevel));
+		Bukkit.broadcastMessage("EXPONENT: " + functionExponent);
+		return Math.round(Math.pow(level, functionExponent));
 	}
 	public static int calculatePoints(LastLifeTeam team){
-		return 0;
+		List<Advancement> advancements = team.getAdvancementsDone();
+		List<com.fren_gor.ultimateAdvancementAPI.advancement.Advancement> advancementsLast = team.getLastAdvancementDone();
 
+
+		int lastLifeChallenges = advancementsLast.stream().filter(ad -> ad.getNMSWrapper().getDisplay().getAdvancementFrameType().getFrameType().equals(AdvancementFrameTypeWrapper.FrameType.CHALLENGE)).toList().size();
+		int vanillaChallenges = advancements.stream().filter(ad ->{
+			if (ad.getKey().getKey().contains("recipes/")) return false;
+			AdvancementInfo advancementInfo = new AdvancementInfo(ad);
+			return advancementInfo.getFrameType().equalsIgnoreCase("challenge");
+		}).toList().size();
+		int lastLifeAdvancements = advancementsLast.stream().filter(ad -> !ad.getNMSWrapper().getDisplay().getAdvancementFrameType().getFrameType().equals(AdvancementFrameTypeWrapper.FrameType.CHALLENGE)).toList().size();
+		int vanillaAdvancements = advancements.stream().filter(ad ->{
+			AdvancementInfo advancementInfo = new AdvancementInfo(ad);
+			if (ad.getKey().getKey().contains("recipes/")) return false;
+
+			return !advancementInfo.getFrameType().equalsIgnoreCase("challenge");
+		}).toList().size();
+		int exp = 5*lastLifeChallenges + 3*vanillaChallenges + 2*lastLifeAdvancements + vanillaAdvancements;
+		return exp;
 	}
+
 	@Deprecated
 	public static int challangesOfA(LastLifeTeam team, boolean unique){
 
@@ -198,7 +249,17 @@ public class TeamsManager {
 			return true;
 		}).toList().size()
 				+ team.getLastAdvancementDone().stream().filter(advancement -> advancement.getNMSWrapper().getDisplay().getAdvancementFrameType().getFrameType().equals(AdvancementFrameTypeWrapper.FrameType.CHALLENGE)).toList().size();
-		return team.getAdvancementsDone().stream().distinct().toList().size() + team.getLastAdvancementDone().stream().distinct().toList().size();
+
+		return team.getAdvancementsDone().stream().filter(advancement -> {
+			AdvancementInfo info = new AdvancementInfo(advancement);
+			if (advancement.getKey().getKey().contains("recipes/")) return false;
+			if (info.getFrameType().equals("unknown")) return false;
+
+			if (!info.getFrameType().equals("challenge")) return true;
+			return false;
+		}).distinct().toList().size()
+				+ team.getLastAdvancementDone().stream().filter(advancement -> !advancement.getNMSWrapper().getDisplay().getAdvancementFrameType().getFrameType().equals(AdvancementFrameTypeWrapper.FrameType.CHALLENGE)).distinct().toList().size();
+
 	}
 	public static void registerTeam(LastLifeTeam team){
 		saveTeam(team);
