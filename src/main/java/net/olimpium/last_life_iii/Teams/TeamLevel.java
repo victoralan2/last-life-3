@@ -36,19 +36,19 @@ public class TeamLevel {
 				break;
 			case 5, 6:
 				perks.add(3);
-				perks.add(3);
+				perks.add(2);
 				break;
 			case 7, 8:
-				perks.add(4);
+				perks.add(3);
 				perks.add(3);
 				break;
 			case 9:
 				perks.add(4);
-				perks.add(4);
+				perks.add(3);
 				break;
 			case 10:
-				perks.add(5);
-				perks.add(5);
+				perks.add(4);
+				perks.add(4);
 				break;
 		}
 
