@@ -105,6 +105,7 @@ public final class Last_life_III extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Escorpiones(), this);
         getServer().getPluginManager().registerEvents(new FireworkCreepers(), this);
         getServer().getPluginManager().registerEvents(new OverheatedCreeper(),this);
+        getServer().getPluginManager().registerEvents(new EspectroDeCodicia(), this);
         //getServer().getPluginManager().registerEvents(new MobBomb(), this);
         getServer().getPluginManager().registerEvents(new StarCollapser(), this);
         Catalyzer.Schelduler(this);

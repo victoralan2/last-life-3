@@ -58,7 +58,7 @@ public class NetherHeat implements Listener {
                                         }
                                     }
                                 }
-                                Thread.sleep(100);
+                                Thread.sleep(200);
                             }
                         }
                     }
