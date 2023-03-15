@@ -31,7 +31,9 @@ public class EspectroDeCodicia implements Listener {
 		if(!(e.getDamager().getCustomName().equals(ChatColor.GOLD+"Espectro de la Codicia"))) return;
 		if(e.getEntity() instanceof Player){
 			Player player = (Player) e.getEntity();
+			if(player.getLevel()<1) return;
 			player.setLevel(player.getLevel()-1);
+			Bukkit.broadcastMessage(EntityNBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.INTEGER,"levelStolen",Integer.class).toString());
 			if(EntityNBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.INTEGER,"levelStolen",Integer.class) != null){
 				int levelsStolen = EntityNBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.INTEGER,"levelStolen",Integer.class);
 				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.INTEGER,levelsStolen+1,"levelStolen");
