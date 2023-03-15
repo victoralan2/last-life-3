@@ -37,6 +37,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -181,31 +182,35 @@ public class Bot extends ListenerAdapter implements Listener {
     }
     public static void playerDeath(Player player, String reason) {
         try{
-            //Embed builderr (eb)
-            EmbedBuilder eb = new EmbedBuilder();
+            new BukkitRunnable(){
+                @Override
+                public void run(){
+                    //Embed builderr (eb)
+                    EmbedBuilder eb = new EmbedBuilder();
 
-            eb.setTitle("*" + player.getName() + " ha muerto PARA SIEMPRE*", null);
-            eb.setColor(Color.RED);
-            eb.setDescription(reason);
+                    eb.setTitle("*" + player.getName() + " ha muerto PARA SIEMPRE*", null);
+                    eb.setColor(Color.RED);
+                    eb.setDescription(reason);
 
-            //sends embed
-            bot.getChannelById(TextChannel.class, "1008716703636652083").sendMessageEmbeds(eb.build()).queue();
+                    //sends embed
+                    bot.getChannelById(TextChannel.class, "1008716703636652083").sendMessageEmbeds(eb.build()).queue();
 
-            //@everyone message
-            Message DecoyMessage =  bot.getChannelById(TextChannel.class, "1008716703636652083").sendMessage("@everyone " + player.getName() + " ha muerto").complete();
+                    //@everyone message
+                    Message DecoyMessage =  bot.getChannelById(TextChannel.class, "1008716703636652083").sendMessage("@everyone " + player.getName() + " ha muerto").complete();
 
 
-            //delete message after 0.05 seconds
-            DecoyMessage.delete().queueAfter(50, TimeUnit.MICROSECONDS);
+                    //delete message after 0.05 seconds
+                    DecoyMessage.delete().queueAfter(50, TimeUnit.MICROSECONDS);
 
-            // TO DO
-            for (Member member : LastLifeGuild.getMembers()){
-                if (member.getEffectiveName().equals(player.getName())){
-                    LastLifeGuild.removeRoleFromMember(member,LastLifeGuild.getRoleById("913493620210925568")).queue();
-                    LastLifeGuild.addRoleToMember(member,LastLifeGuild.getRoleById("913493619875385431")).queue();
+                    // TO DO
+                    for (Member member : LastLifeGuild.getMembers()){
+                        if (member.getEffectiveName().equals(player.getName())){
+                            LastLifeGuild.removeRoleFromMember(member,LastLifeGuild.getRoleById("913493620210925568")).queue();
+                            LastLifeGuild.addRoleToMember(member,LastLifeGuild.getRoleById("913493619875385431")).queue();
+                        }
+                    }
                 }
-            }
-
+            }.runTaskAsynchronously(Last_life_III.getPlugin());
         } catch (Exception exception){
             exception.printStackTrace();
         }
