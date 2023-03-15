@@ -43,8 +43,8 @@ public class EspectroDeCodicia implements Listener {
 				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT, levelEXP + levelsStolen,"EXPStolen");
 				Bukkit.broadcastMessage("2.Actual EXP: "+levelsStolen+levelEXP);
 			}else{
-				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.INTEGER,1,"levelStolen");
-				Bukkit.broadcastMessage("1");
+				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT,levelEXP,"EXPStolen");
+				Bukkit.broadcastMessage("1.Actual EXP: "+levelEXP);
 			}
 		}
 	}
