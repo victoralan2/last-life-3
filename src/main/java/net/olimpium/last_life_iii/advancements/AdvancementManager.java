@@ -65,12 +65,9 @@ public class AdvancementManager {
         while (advancementIterator.hasNext()){
             org.bukkit.advancement.Advancement advancement = advancementIterator.next();
             if (advancement.getKey().getKey().contains("recipes/")) continue;
-            System.out.println(advancement.getKey().getKey() + ".");
-            if (advancement.getKey().getKey().equals(key)) {
-                System.out.println(advancement.getKey().getKey());
-
+            if (advancement.getKey().getKey().equals(key))
                 return advancement;
-            }
+
         }
         return null;
     }

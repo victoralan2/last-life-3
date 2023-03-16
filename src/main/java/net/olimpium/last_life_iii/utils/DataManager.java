@@ -1,96 +1,132 @@
 package net.olimpium.last_life_iii.utils;
 
-import net.olimpium.last_life_iii.Last_life_III;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Scanner;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class DataManager {
+	private final String fileName;
+	private JSONObject jsonData;
 
+	public DataManager(String fileName) {
+		this.fileName = fileName;
+		this.jsonData = new JSONObject();
+	}
 
-	private final File metaDataFile ;
+	public void setData(JSONObject newData) {
+		jsonData = newData;
+		writeToFile();
+	}
 
-	private HashMap<File, JSONObject> dataList;
-	public DataManager(){
-		metaDataFile = new File(Last_life_III.getPlugin().getDataFolder() + "/files.meta");
+	public void changeData(String key, Object value) {
+
+		if (jsonData.containsKey(key)) {
+			jsonData.replace(key, value);
+		} else {
+			jsonData.put(key, value);
+		}
+		writeToFile();
+	}
+
+	public void writeToFile() {
 		try {
-			metaDataFile.createNewFile();
-		} catch (IOException e){
+			if (!new File(fileName).exists()) new File(fileName).createNewFile();
+		} catch (Exception e){
 			e.printStackTrace();
 		}
-	}
-	public void addData(JSONObject data, File file){
-		dataList.put(file, data);
-		save(data, file);
-	}
-	public void setData(JSONObject data, File file){
-		save(data, file);
-		dataList.replace(file, data);
-	}
-	public JSONObject getData(File file){
-		return dataList.get(file);
-	}
-	/**
-	 * Adds an autosave that runs every X time
-	 * @param period The time in ticks in witch the autoSave runs
-	 */
-	public void addAutoSave(int period){
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				try {
-					save();
-				} catch (Exception e){
-					e.printStackTrace();
-				}
-			}
-		}.runTaskTimer(Last_life_III.getPlugin(), 0, period);
 
-	}
-	public void save() throws IOException {
-		for (Map.Entry entry : dataList.entrySet()){
-			JSONObject json = (JSONObject) entry.getValue();
-			File file = (File)entry.getKey();
-			save(json, file);
-		}
-		// Save the metadata
-		saveMetadata();
-	}
-	public void load() throws Exception{
-		Scanner scanner = new Scanner(metaDataFile);
-		while (scanner.hasNextLine()){
-			File file = new File(Last_life_III.getPlugin().getDataFolder() + scanner.nextLine());
-			load(file);
-		}
-	}
-	private void save(JSONObject data, File file) {
-		try {
-			FileWriter fileWriter = new FileWriter(file);
-			fileWriter.write(data.toJSONString());
-			fileWriter.close();
+		try (FileWriter fileWriter = new FileWriter(fileName)) {
+			fileWriter.write(compress(jsonData.toJSONString()));
+			fileWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	private void saveMetadata() throws IOException {
-		FileWriter fileWriter = new FileWriter(metaDataFile);
-		for (File file : dataList.keySet()){
-			fileWriter.write(file.getPath() + "\n");
+
+	public void loadDataFromFile() {
+		try {
+			String fileContents = decompress(new String(Files.readAllBytes(Paths.get(fileName))));
+			JSONParser parser = new JSONParser();
+			System.out.println("PATH: " + fileName);
+			System.out.println("LOADED: " + fileContents);
+
+			this.jsonData = (JSONObject) parser.parse(fileContents);
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
 		}
 	}
-	private void load(File file) throws Exception {
-		JSONParser parser = new JSONParser();
-		Scanner scanner = new Scanner(file);
-		JSONObject jsonObject = (JSONObject) parser.parse(scanner.next());
-		dataList.put(file, jsonObject);
+	public JSONObject getData() {
+		return jsonData;
 	}
 
+	public static String beautify(String input) {
+		int tabCount = 0;
+
+		StringBuilder inputBuilder = new StringBuilder();
+		char[] inputChar = input.toCharArray();
+
+		for (int i = 0; i < inputChar.length; i++) {
+			String charI = String.valueOf(inputChar[i]);
+			if (charI.equals("}") || charI.equals("]")) {
+				tabCount--;
+				if (!String.valueOf(inputChar[i - 1]).equals("[") && !String.valueOf(inputChar[i - 1]).equals("{"))
+					inputBuilder.append(newLine(tabCount));
+			}
+			inputBuilder.append(charI);
+
+			if (charI.equals("{") || charI.equals("[")) {
+				tabCount++;
+				if (String.valueOf(inputChar[i + 1]).equals("]") || String.valueOf(inputChar[i + 1]).equals("}"))
+					continue;
+
+				inputBuilder.append(newLine(tabCount));
+			}
+
+			if (charI.equals(",")) {
+				inputBuilder.append(newLine(tabCount));
+			}
+		}
+
+		return inputBuilder.toString();
+	}
+	private static String newLine(int tabCount) {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("\n");
+		for (int j = 0; j < tabCount; j++)
+			builder.append("  ");
+
+		return builder.toString();
+	}
+
+	public static String compress(String str) throws IOException {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream)) {
+			gzipOutputStream.write(str.getBytes());
+		}
+		return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+	}
+
+	public static String decompress(String compressedStr) throws IOException {
+		byte[] compressedData = Base64.getDecoder().decode(compressedStr);
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(compressedData);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		try (GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream)) {
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = gzipInputStream.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, len);
+			}
+		}
+		return new String(outputStream.toByteArray());
+	}
 }

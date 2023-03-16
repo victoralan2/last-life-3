@@ -37,7 +37,7 @@ public final class Last_life_III extends JavaPlugin {
     public static precisionEnchant precisionEnchant;
     public static final String botToken = "MTAwODcxNTk3NzQwOTcwODEzMw.GH0g2f.U4WC1Zqcw9z4YyGnufSWp5yqL4Mt3TNsgN174s";
 
-    public static DataManager dataManager;
+    public static MetaDataManager metaDataManager;
     private static String ip;
 
     public static Player theDracon_ = Bukkit.getPlayer("TheDracon_");
@@ -50,12 +50,8 @@ public final class Last_life_III extends JavaPlugin {
         ip = this.getServer().getIp();
 
         //data manager
-        try {
-            dataManager =  new DataManager();
-            dataManager.load();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        metaDataManager = new MetaDataManager();
+
 
         //verification system
         getServer().getPluginManager().registerEvents(new VerificationSystem(), this);
@@ -137,7 +133,7 @@ public final class Last_life_III extends JavaPlugin {
 
         // AI
         getServer().getPluginManager().registerEvents(new PlayerInformationRecopilador(), this);
-
+        PlayerInformationRecopilador.init();
         //advancements
         AdvancementManager.createBaseAdvancements();
         AdvancementManager.registerAdvancements();
@@ -146,6 +142,11 @@ public final class Last_life_III extends JavaPlugin {
         TeamsManager.load();
         TeamsManager.autoSave();
         getServer().getPluginManager().registerEvents(new AdvancementTeams(), this);
+
+        // LOAD ALL DATA FROM MANAGER
+        System.out.println("LOADING...");
+        metaDataManager.loadAll();
+        System.out.println("LOADED!");
 
         //time system
         try {
@@ -174,6 +175,8 @@ public final class Last_life_III extends JavaPlugin {
 
         }
 
+
+
     }
 
     @Override
@@ -188,7 +191,7 @@ public final class Last_life_III extends JavaPlugin {
         }
         TeamsManager.saveAll();
         try {
-            dataManager.save();
+            metaDataManager.saveAll();
         } catch (Exception e){
             e.printStackTrace();
         }
