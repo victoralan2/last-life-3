@@ -30,11 +30,14 @@ public class DebugPlayerAI implements CommandExecutor, TabCompleter {
 			case "TIME_FACTOR": {
 				PlayerInformationRecopilador.TIME_FACTOR = Double.parseDouble(strings[1]);
 			}
-			case "PHI": {
-				PlayerInformationRecopilador.PHI = Double.parseDouble(strings[1]);
+			case "BLOCK_LIFETIME": {
+				PlayerInformationRecopilador.BLOCK_LIFETIME = Double.parseDouble(strings[1]);
 			}
-			case "DECAY_MULTIPLIER": {
-				PlayerInformationRecopilador.DECAY_MULTIPLIER = Double.parseDouble(strings[1]);
+			case "DECAY_ADDER": {
+				PlayerInformationRecopilador.DECAY_ADDER = Double.parseDouble(strings[1]);
+			}
+			case "DECAY_REMOVER": {
+				PlayerInformationRecopilador.DECAY_REMOVER = Double.parseDouble(strings[1]);
 			}
 			case "DECAY_RANGE": {
 				PlayerInformationRecopilador.DECAY_RANGE = Integer.parseInt(strings[1]);
@@ -67,13 +70,15 @@ public class DebugPlayerAI implements CommandExecutor, TabCompleter {
 		List<String> goodSubCommands = new ArrayList<>();
 		if (args.length == 1) {
 			subCommands.add("TIME_FACTOR");
-			subCommands.add("PHI");
-			subCommands.add("DECAY_MULTIPLIER");
+			subCommands.add("BLOCK_LIFETIME");
+			subCommands.add("DECAY_ADDER");
 			subCommands.add("REINFORCEMENT_DECAY");
 			subCommands.add("REINFORCEMENT_CAP");
 			subCommands.add("REINFORCEMENT_RANGE");
 			subCommands.add("MINIMUM_DISCONNECT_TIME");
 			subCommands.add("UPDATE_CHANCE");
+			subCommands.add("DECAY_REMOVER");
+			subCommands.add("DECAY_RANGE");
 			subCommands.add("BLOCK_CHANCE");
 
 			for (String sub : subCommands){
