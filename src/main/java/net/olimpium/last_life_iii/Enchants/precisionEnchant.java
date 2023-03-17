@@ -94,7 +94,7 @@ public class precisionEnchant extends Enchantment implements Listener {
     }
 
     @Override
-    public @NotNull Component displayName(int level) {
+    public @NotNull Component displayName(int i) {
         return null;
     }
 
@@ -114,7 +114,7 @@ public class precisionEnchant extends Enchantment implements Listener {
     }
 
     @Override
-    public float getDamageIncrease(int level, @NotNull EntityCategory entityCategory) {
+    public float getDamageIncrease(int i, @NotNull EntityCategory entityCategory) {
         return 0;
     }
 
