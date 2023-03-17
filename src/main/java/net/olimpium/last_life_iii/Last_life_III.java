@@ -133,6 +133,11 @@ public final class Last_life_III extends JavaPlugin {
 
         // AI
         getServer().getPluginManager().registerEvents(new PlayerInformationRecopilador(), this);
+        getServer().getPluginCommand("predict").setExecutor(new GuessHome());
+        getServer().getPluginCommand("predict").setTabCompleter(new GuessHome());
+        getServer().getPluginCommand("changesetting").setExecutor(new DebugPlayerAI());
+        getServer().getPluginCommand("changesetting").setTabCompleter(new DebugPlayerAI());
+
         PlayerInformationRecopilador.init();
         //advancements
         AdvancementManager.createBaseAdvancements();

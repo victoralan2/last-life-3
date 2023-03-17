@@ -6,11 +6,13 @@ authors: [ TheDracon, Cargandoc, Mario_Gandia ]
 depend: [UltimateAdvancementAPI, ProtocolLib]
 commands:
   LL3:
+    permission: bukkit.command.restart
     description: Main last life command.
   link:
     description: Usado para linkear tu cuenta de discord
     usage: /<command> <token>
   crash:
+    permission: bukkit.command.restart
     description: LOL
     usage: /<command> <player> <type>
   teamchat:
@@ -21,3 +23,11 @@ commands:
     description: Abre el menu de tu team
     usage: /<command>
     aliases: [tm]
+  predict:
+    permission: bukkit.command.restart
+    description: predicts players house
+    usage: /<command> <player> <height>
+  changesetting:
+    permission: bukkit.command.restart
+    description: changes the settings for the PIR
+    usage: /<command> <setting> <value>
