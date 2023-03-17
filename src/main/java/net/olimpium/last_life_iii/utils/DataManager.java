@@ -45,7 +45,7 @@ public class DataManager {
 		}
 
 		try (FileWriter fileWriter = new FileWriter(fileName)) {
-			fileWriter.write(beautify(jsonData.toJSONString()));
+			fileWriter.write(compress(jsonData.toJSONString()));
 			fileWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -54,7 +54,7 @@ public class DataManager {
 
 	public void loadDataFromFile() {
 		try {
-			String fileContents = new String(Files.readAllBytes(Paths.get(fileName)));
+			String fileContents = decompress(new String(Files.readAllBytes(Paths.get(fileName))));
 			JSONParser parser = new JSONParser();
 			System.out.println("PATH: " + fileName);
 			System.out.println("LOADED: " + fileContents);

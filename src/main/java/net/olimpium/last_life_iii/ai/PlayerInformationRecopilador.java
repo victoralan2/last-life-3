@@ -1,7 +1,10 @@
 package net.olimpium.last_life_iii.ai;
 
+import net.kyori.adventure.text.Component;
+import net.minecraft.server.v1_16_R3.Tuple;
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.utils.DataManager;
+import net.olimpium.last_life_iii.utils.Loc;
 import net.olimpium.last_life_iii.utils.VerificationSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,23 +18,24 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class PlayerInformationRecopilador implements Listener {
 	public static HashMap<UUID, JSONArray> playersBlocks = new HashMap<>();
+	public static HashMap<UUID, List<Location>> afkHashMap = new HashMap<>();
+
+	public static double AFK_TIME = 5;
+
 	public static double TIME_FACTOR = 1;
 
 	// THE DECAY VALUE WHERE BLOCKS GET DELETED
@@ -326,7 +330,6 @@ public class PlayerInformationRecopilador implements Listener {
 							continue;
 						}
 					}
-					player.sendMessage(player.getVelocity().toString());
 					if (Math.abs(location.distance(player.getLocation())) > DECAY_RANGE) {
 						// DECAY BLOCK
 						if (reinforcement == 0) {
@@ -379,8 +382,44 @@ public class PlayerInformationRecopilador implements Listener {
 		uuidjsonObjectHashMap.get(uuid).changeData("dataPoints", array);
 	}
 	public static boolean isPlayerAFK(Player player){
-		return true;
+		UUID uuid = player.getUniqueId();
+		List<Location> locations = new ArrayList<>();
+		if (afkHashMap.containsKey(uuid)){
+			locations = afkHashMap.get(uuid);
+		} else {
+			afkHashMap.put(uuid, locations);
+		}
+		locations.add(player.getLocation());
+		List<Location> locationsOnlyEqual = new ArrayList<>();
+		Location lastLoc = null;
+		for (Location loc : locations){
+			if (lastLoc == null) {
+				locationsOnlyEqual.add(loc);
+				lastLoc = loc;
+				continue;
+			}
+			Double distance = Math.abs(lastLoc.distance(loc));
+
+			if (distance<2 || loc.getYaw() == player.getLocation().getYaw() && loc.getPitch() == player.getLocation().getPitch()){
+				locationsOnlyEqual.add(loc);
+			}
+			lastLoc = loc;
+		}
+
+
+		if (locations.size() == locationsOnlyEqual.size()){
+			if (locations.size() >= AFK_TIME){
+				//AFK
+				return true;
+			}
+
+		} else {
+			locations.clear();
+			afkHashMap.replace(uuid, locations);
+		}
+		return false;
 	}
+
 	public static void addPlayer(UUID player){
 		DataManager playerDataManager = new DataManager(dataFile.getAbsolutePath() + "/" + player + "_dataPoints.json");
 		JSONObject object = new JSONObject();
@@ -396,3 +435,4 @@ public class PlayerInformationRecopilador implements Listener {
 		Last_life_III.metaDataManager.addDataManager(playerDataManager);
 	}
 }
+
