@@ -32,7 +32,6 @@ public class BatDropsMoreEXP implements Listener {
         if(e.getDamager() instanceof Player){
             java.util.Random rnd = new Random();
             if((rnd.nextFloat()*100)<75){
-                e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENTITY_PLAYER_ATTACK_NODAMAGE,1,0);
                 e.setCancelled(true);
             }
 
