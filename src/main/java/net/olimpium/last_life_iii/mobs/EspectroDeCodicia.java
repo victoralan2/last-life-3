@@ -1,10 +1,8 @@
 package net.olimpium.last_life_iii.mobs;
 
-import net.minecraft.server.v1_16_R3.EntityTypes;
 import net.olimpium.last_life_iii.Last_life_III;
 import net.olimpium.last_life_iii.utils.EXPUtils;
-import net.olimpium.last_life_iii.utils.EntityNBTManager;
-import org.bukkit.Bukkit;
+import net.olimpium.last_life_iii.utils.NBTManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -52,11 +50,11 @@ public class EspectroDeCodicia implements Listener {
 			float expAfter = EXPUtils.getPlayerExp(player);
 			float levelEXP = expBefore-expAfter;
 
-			if(EntityNBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.FLOAT,"EXPStolen",Float.class) != null){
-				float levelsStolen = EntityNBTManager.readNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT,"EXPStolen",Float.class);
-				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT, levelEXP + levelsStolen,"EXPStolen");
+			if(NBTManager.readNBT((LivingEntity) e.getDamager(),PersistentDataType.FLOAT,"EXPStolen",Float.class) != null){
+				float levelsStolen = NBTManager.readNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT,"EXPStolen",Float.class);
+				NBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT, levelEXP + levelsStolen,"EXPStolen");
 			}else{
-				EntityNBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT,levelEXP,"EXPStolen");
+				NBTManager.writeNBT((LivingEntity) e.getDamager(), PersistentDataType.FLOAT,levelEXP,"EXPStolen");
 			}
 		}
 	}
@@ -64,6 +62,6 @@ public class EspectroDeCodicia implements Listener {
 	public void onDeath(EntityDeathEvent e){
 		if (e.getEntity().getCustomName() == null) return;
 		if(!(e.getEntity().getCustomName().equals(ChatColor.GOLD+"Espectro de la Codicia"))) return;
-		e.setDroppedExp(Math.round(EntityNBTManager.readNBT(e.getEntity(), PersistentDataType.FLOAT,"EXPStolen",Float.class)));
+		e.setDroppedExp(Math.round(NBTManager.readNBT(e.getEntity(), PersistentDataType.FLOAT,"EXPStolen",Float.class)));
 	}
 }
