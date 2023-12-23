@@ -32,7 +32,7 @@ import java.util.HashMap;
 public final class Last_life_III extends JavaPlugin {
     private static Last_life_III plugin;
     public static precisionEnchant precisionEnchant;
-    public static final String botToken = "MTAwODcxNTk3NzQwOTcwODEzMw.GH0g2f.U4WC1Zqcw9z4YyGnufSWp5yqL4Mt3TNsgN174s";
+    public static final String botToken = "";
 
     public static MetaDataManager metaDataManager;
     private static String ip;
